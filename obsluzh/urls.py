@@ -11,6 +11,8 @@ urlpatterns = [
     path('register', register, name='reg'),
     path('profile', profile, name='prof'),
 
+    path('start', start, name='start'),
+
 
     path('price', price, name='price'),
     path('price/remove_<int:pk>', remove_product, name='remove product'),

@@ -1,10 +1,77 @@
 <!DOCTYPE html>
+{% load static %}
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
-</head>
-<body>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <title>{% block title %} Главная {% endblock %}</title>
+
+    <style type="text/css">
+        .head_info {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            right: 0;
+            float: left;
+        }
+
+        .head_bg_img {
+            position: relative;
+            width: 100%;
+            top: -200px;
+        }
+
+        body {
+            background: url({% static 'images/fon.jpg' %}) no-repeat;
+            -moz-background-size: 100%; /* Firefox 3.6+ */
+            -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+            -o-background-size: 100%; /* Opera 9.6+ */
+            background-size: 100%; /* Современные браузеры */
+        }
+
+    </style>
+</head>
+
+<body>
+{% block content %}
+<nav class="navbar" style="background: url({% static 'images/navbar.png' %}) no-repeat">
+    <div class="container">
+        <div>
+            <a class="" href="#">
+                <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
+            </a>
+        </div>
+
+        <div class=""  style="margin-right: 36%">
+            <img src="{% static 'images/villem.png' %}" width="375" height="126">
+        </div>
+    </div>
+</nav>
+
+<div class="video " id="video-bg">
+    <video width="100%" height="auto" autoplay="autoplay" loop>
+        <source src="{% static 'images/video.mp4' %}" type="video/mp4">
+    </video>
+</div>
+<div align="center" class="">
+    <a class="head_info" href="{% url 'start' %}" style="margin-top: 30%"><img src="{% static 'images/butStart.png' %}" width="15%"
+                                                      height="auto"></a>
+</div>
+<div align="center">
+    <a class="head_info" href="#" style="margin-top: 45%"><img src="{% static 'images/logo.png' %}" width="15%"
+                                                      height="auto"></a>
+</div>
+
+{% endblock %}
 </body>
+
+<script>
+
+</script>
 </html>

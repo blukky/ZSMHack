@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+
+    {% block title %}<title>Главная</title>{% endblock %}
+
+    <style type="text/css">
+        .head_info {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            right: 0;
+            float: left;
+        }
+
+        .head_bg_img {
+            position: relative;
+            width: 100%;
+            top: -200px;
+        }
+
+        body {
+            background: url({% static 'images/fon.jpg' %}) no-repeat;
+            -moz-background-size: 100%; /* Firefox 3.6+ */
+            -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+            -o-background-size: 100%; /* Opera 9.6+ */
+            background-size: 100%; /* Современные браузеры */
+        }
+
+    </style>
+</head>
+<body>
+{% block content %}
+        <div class="" style="margin: 2%">
+            <a class="" href="#">
+                <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
+            </a>
+        </div>
+
+        <div class=""href="#" style="" align="center">
+            <img src="{% static 'images/villem.png' %}" width="375" height="126">
+        </div>
+
+<div class="" style="margin: 10%" align="center">
+<a class="" href="#">
+            <img src="{% static 'images/butProd.png' %}" width="30%" height="auto"></a>
+
+    <a class="" href="#">
+            <img src="{% static 'images/butPost.png' %}" width="30%" height="auto"></a>
+        </div>
+{% endblock %}
+</body>
+
+<script>
+
+</script>
+</html>

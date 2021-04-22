@@ -15,8 +15,7 @@ class MyUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True, null=True, verbose_name="Логотип")
     phone = models.CharField(max_length=11, null=True, blank=True, verbose_name="Номер телефона")
-    email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Электронная почта")
-    price_password = models.CharField(max_length=255, null=True, blank=True, verbose_name="Пароль для прайс-листа")
+    email = models.EmailField(max_length=255, verbose_name="Электронная почта")
     who = models.CharField(max_length=255, choices=WHO, default='Покупатель', verbose_name='Статус пользователя')
 
     def __unicode__(self):

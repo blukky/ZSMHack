@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Карта {% endblock %}
+{% block style %}
+<style type="text/css">
+
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+{% include 'nb_map.html' %}
+</div>
+    <div class="" style="margin-top: -9%" align="center">
+        <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+    </div>
+
+<div class="d-flex" style="margin: 2%">
+
+    <div class="mb-5 bg-body rounded text-dark"
+         style="width: 80%; box-shadow: 0 1rem 3rem rgba(255,255,255,0.3)!important; margin-left: 10%">
+         {{ map|safe }}
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+

@@ -36,19 +36,24 @@ jQuery(function () {
                     var pos = ' поселков';
                 }
                     $('#div_country h5').text('В данном регионе '+ findpos+ size + pos);
+                if (size != 0 ) {
                     $('#country').show();
                     $('#div_country h5').show();
-                Object.keys(data).forEach(function (key){
+                    Object.keys(data).forEach(function (key) {
                         $('.country').each(function () {
-                            if ($(this).val()==data[key]){
+                            if ($(this).val() == data[key]) {
                                 $(this).show();
                             }
                         });
 
-                });
-                $('#country').change(function () {
-                   $('#status').show();
-                });
+                    });
+                    $('#country').change(function () {
+                        $('#status').show();
+                    });
+                }else{
+                    var text = $('#div_country h5').text();
+                    $('#div_country h5').text(text +' Выберите соседние регионы');
+                }
             }
         });
     });

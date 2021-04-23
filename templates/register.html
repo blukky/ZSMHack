@@ -12,7 +12,7 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
-        input {
+        input, #file {
             box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
         }
 
@@ -52,7 +52,7 @@
             <div id="div_id_avatar" class="form-group"><label for="id_avatar" class="">
                 Аватар:
             </label>
-                <div class="" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
+                <div class="" id="file" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
                     <label for="file-upload" class="custom-file-upload text-dark">
                         <i class="fa fa-download"></i> Загрузить фотографию
                     </label><input id="file-upload" type="file" name="avatar" accept="image/*"></div>
@@ -69,7 +69,7 @@
                 <div class=""><input type="text"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="phone" class="form-control textinput textInput form-control"
-                                     maxlength="11" id="id_phone"></div>
+                                     maxlength="17" id="id_phone"></div>
             </div>
             <div id="div_id_obl" class="form-group"><label for="id_obl" class="">
                 Ваш регион: </label>
@@ -95,8 +95,12 @@
                                      name="username" class="form-control textinput textInput form-control"
                                      required="" id="id_username"></div>
             </div>
-            <div id="div_id_password1" class="form-group"><label for="id_password1" class=" requiredField">
-                Пароль:</label>
+            <div id="div_id_password1" class="form-group">
+                <label for="id_password1" class=" requiredField">
+                    Пароль:</label>
+                <div id="alert_1" class="alert alert-danger" style="font-size: 14px" role="alert">
+                    Пароли должны совпадать!
+                </div>
                 <div class=""><input type="password"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="password1"
@@ -105,6 +109,9 @@
             </div>
             <div id="div_id_password2" class="form-group"><label for="id_password2" class=" requiredField">
                 Повторите пароль:</label>
+                <div id="alert_2" class="alert alert-danger" style="font-size: 14px" role="alert">
+                    Пароли должны совпадать!
+                </div>
                 <div class=""><input type="password"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="password2"

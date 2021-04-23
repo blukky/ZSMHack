@@ -14,6 +14,8 @@ urlpatterns = [
     path('start', start, name='start'),
     path('main', main, name='main'),
 
+    path('region', select_region, name='region'),
+
 
     path('price', price, name='price'),
     path('price/remove_<int:pk>', remove_product, name='remove product'),

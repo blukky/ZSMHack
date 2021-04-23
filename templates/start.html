@@ -40,14 +40,14 @@ option{
     <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
 <select id="select_region" class="form-select  fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
     {% for item in region %}
-        <option value="">{{ item }}</option>
+        <option value="{{ item }}">{{ item }}</option>
     {% endfor %}
 </select>
 </div>
 
 <div id="" class="d-grid gap-1 col-3 mx-auto" align="center">
     <h5 class="mt-2" style="color: rgba(255,255,255,0.5)">В данном регионе найдено:</h5>
-<select class="form-select fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
+<select id="country" class="form-select fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
       <option>Выберите1</option>
       <option>Выберите2</option>
 </select>

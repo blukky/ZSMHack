@@ -100,3 +100,13 @@ def add_product(request):
     return render(request, 'base.html')
 
 
+
+
+######################## AJAX
+
+def select_region(request):
+    if request.method == 'POST':
+
+    return JsonResponse
+
+

@@ -35,6 +35,14 @@ def get_user(request):
         user = ''
     return user
 
+def get_price(request):
+    if request.user.is_authenticated:
+        user = MyUser.objects.get(user=request.user)
+        price = PriceList.objects.filter(owner=user)
+        if not price:
+            price = PriceList.objects.create(owner=user)
+        return price
+
 def index(request):
     user = get_user(request)
     data = {'user': user}
@@ -64,6 +72,7 @@ def register(request):
             new_user = MyUser.objects.create(user=user)
             new_user.email = form.cleaned_data['email']
             new_user.avatar = settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.jpg"
+            new_user.obl = form.cleaned_data['obl']
             new_user.phone = form.cleaned_data['phone']
             new_user.who = form.cleaned_data['who']
             new_user.save()
@@ -240,6 +249,7 @@ def add_category(request):
     return render(request, 'add_category.html.html')
 
 def price(request):
+    price_list = get_price(request)
     return render(request, 'price-list.html.html')
 
 def price_info(request, pk):

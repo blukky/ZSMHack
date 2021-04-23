@@ -78,6 +78,9 @@ def main(request):
 def profile(request):
     return render(request, 'base.html')
 
+def start(request):
+    return render(request, 'start.html')
+
 def price(request):
     return render(request, 'base.html')
 

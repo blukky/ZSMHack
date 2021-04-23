@@ -11,6 +11,8 @@ from django.forms.models import model_to_dict
 from django.contrib.auth import login, logout, authenticate
 from django.core.mail import EmailMessage, send_mail
 import datetime
+import pandas as pd
+import numpy as np
 import locale
 import re
 import pdfkit
@@ -80,7 +82,10 @@ def profile(request):
     return render(request, 'base.html')
 
 def start(request):
-    return render(request, 'start.html')
+    df = pd.read_csv('regions.csv')
+    region = np.array(df['Облать'])
+    data = {'region': region, 'user':get_user(request)}
+    return render(request, 'start.html', data)
 
 def price(request):
     return render(request, 'base.html')

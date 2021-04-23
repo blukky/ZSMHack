@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block title %}<title>Главная</title>{% endblock %}
+{% block title %} Главная {% endblock %}
 {% block style %}
 <style type="text/css">
 
@@ -19,8 +19,8 @@
     </a>
 
     <div class="d-flex" style="margin-left: 63%">
-    <a class="" href="#" style="margin-right: 20%"><h5>Войти</h5></a>
-        <a class="" href="#" style=""><h5>Зарегистрироваться</h5></a>
+    <a class="" href="{% url 'login' %}" style="margin-right: 20%"><h5>Войти</h5></a>
+        <a class="" href="{% url 'reg' %}" style=""><h5>Зарегистрироваться</h5></a>
     </div>
 </div>
 

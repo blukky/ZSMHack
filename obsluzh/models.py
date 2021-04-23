@@ -46,6 +46,7 @@ class Ptoduct(models.Model):
         ('Производитель', "Производитель"),
         ('Поставщик', "Поставщик"),
     )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     parent = models.IntegerField(verbose_name='Автор')
     name = models.CharField(max_length=255, verbose_name='Наименование продукта')
     photo = models.ImageField(upload_to='product/', verbose_name='Фотография продукта')
@@ -64,7 +65,7 @@ class Ptoduct(models.Model):
 
 class PriceList(models.Model):
     owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-    categories = models.ManyToManyField(Category)
+    products = models.ManyToManyField(Ptoduct)
 
     class Meta:
         verbose_name = 'Прайс-лист'

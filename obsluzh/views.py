@@ -38,7 +38,7 @@ def get_user(request):
 def get_price(request):
     if request.user.is_authenticated:
         user = MyUser.objects.get(user=request.user)
-        price = PriceList.objects.filter(owner=user)
+        price = PriceList.objects.filter(owner=user).first()
         if not price:
             price = PriceList.objects.create(owner=user)
         return price
@@ -228,34 +228,86 @@ def lk(request):
 # Лист услуг
 ####################################
 def remove_product(request, pk):
-
-    return redirect('price')
-
-def remove_category(request, pk):
+    price_list = get_price(request)
+    product = Ptoduct.objects.get(pk=pk)
+    price_list.products.remove(product)
+    product.delete()
+    price_list.save()
     return redirect('price')
 
 def reform_product(request, pk):
+    if request.method == 'POST':
+        if request.POST['photo']:
+        form = ProductForm(request.POST, request.FILES)
 
-    return render(request, 'reform_product.html')
+        if form.is_valid():
+            product = Ptoduct.objects.get(pk=pk)
+            user = get_user(request)
+            path = settings.MEDIA_ROOT + f"/product/{form.cleaned_data['name']}.jpg"
+            im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
+            im.save(path, 'JPEG')
 
-def reform_category(request, pk):
+            product.category = form.cleaned_data['category']
+            product.parent = user.pk
+            product.name = form.cleaned_data['name']
+            product.photo = path
+            product.info = form.cleaned_data['info']
+            product.reg = user.obl
+            product.status = 'Производитель' if user.who == 'Поставщик' else 'Поставщик'
+            product.start_price = form.cleaned_data['start_price']
+            product.save()
+            return redirect('price')
+        else:
+            data = {'user': get_user(request), 'form': form}
+            return render(request, 'reform_product.html', data)
+    else:
+        product = Ptoduct.objects.get(pk=pk)
+        form = ProductForm(initial=model_to_dict(product))
+        data = {'user': get_user(request), 'form': form}
+    return render(request, 'reform_product.html', data)
 
-    return render(request, 'reform_category.html.html')
 
 def add_product(request):
-    return render(request, 'add_product.html.html')
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
 
-def add_category(request):
-    return render(request, 'add_category.html.html')
+            user = get_user(request)
+            path = settings.MEDIA_ROOT + f"\\product\\{form.cleaned_data['name']}.jpg"
+            im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
+            im.save(path, 'JPEG')
+            poduct = Ptoduct.objects.create(parent=user.id,
+                                   category=form.cleaned_data['category'],
+                                   name=form.cleaned_data['name'],
+                                   photo=path,
+                                   info=form.cleaned_data['info'],
+                                   reg=user.obl,
+                                   status='Производитель' if user.who =='Поставщик' else 'Поставщик',
+                                   start_price=form.cleaned_data['start_price']
+                                   )
+            poduct.save()
+            price_list = get_price(request)
+            price_list.products.add(poduct)
+            price_list.save()
+            return redirect('price')
+        else:
+            data = {'user': get_user(request), 'form': form}
+            return render(request, 'add_product.html', data)
+    else:
+        form = ProductForm()
+        data = {'user': get_user(request), 'form': form}
+        return render(request, 'add_product.html', data)
+
 
 def price(request):
     price_list = get_price(request)
-    return render(request, 'price-list.html.html')
+    product = price_list.products.all()
+    data = {'user':get_user(request), 'products':product}
+    return render(request, 'price-list.html', data)
 
 def price_info(request, pk):
     product = Ptoduct.objects.get(pk=pk)
     data = {'user': get_user(request), 'product': product}
-
     return render(request, 'product_detail.html', data)
 
 #####################################

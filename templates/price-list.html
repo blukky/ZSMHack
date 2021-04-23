@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Мои услуги{% endblock %}
+
+{% block content %}
+    {% include 'nb_all.html' %}
+    <div align="right">
+            <div class="bg-green" style="border-radius: 50%" title="Добавить услугу"><a class="p-5 " href="{% url 'add product' %}">+</a></div>
+        </div>
+    <div align="center">
+        {% if not products %}
+            <div>Вы еще не добавили ни одной услуги!</div>
+        {% else %}
+        <div class="row">
+            {% for item in products %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top" src="{{ item.photo.url }}" alt=""></a>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="#">{{ item.name }}</a>
+                        </h4>
+                        <h5>{{ item.start_price }}</h5>
+                        <p class="card-text"><a href="{% url 'info product' pk=item.pk %}">Подробнее..</a></p>
+                        <p class="card-text"><a href="{% url 'reform product' pk=item.pk %}">Редактировать</a></p>
+                        <p class="card-text"><a href="{% url 'remove product' pk=item.pk %}">Удалить</a></p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">{{ item.category }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

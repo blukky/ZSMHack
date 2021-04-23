@@ -268,7 +268,7 @@ def add_product(request):
         if form.is_valid():
 
             user = get_user(request)
-            path = settings.MEDIA_ROOT + f"\\product\\{form.cleaned_data['name']}.jpg"
+            path = settings.MEDIA_ROOT + f"/product/{form.cleaned_data['name']}.jpg"
             im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
             im.save(path, 'JPEG')
             poduct = Ptoduct.objects.create(parent=user.id,
@@ -324,14 +324,14 @@ def other_lk(request, pk):
     count_order_to = len(Order.objects.filter(to_user=other_user.id))
     count_order_from = len(Order.objects.filter(from_user=other_user.id))
     count = [count_order_to, count_order_from]
-    data = {'user': get_user(request),' other_user': other_user, 'products':products, 'count': count}
+    data = {'user': get_user(request),'other_user': other_user, 'products':products, 'count': count}
 
     return render(request, 'other_lk.html', data)
 
 def info_product(request, pk):
     product = Ptoduct.objects.get(pk=pk)
     avtor = MyUser.objects.get(pk=product.parent)
-    data = {'user': get_user(request), 'product': product, 'avtor':avtor}
+    data = {'user': get_user(request), 'product': product, 'avtor': avtor}
     return render(request, 'info_product.html', data)
 
 def create_order(request, pk):

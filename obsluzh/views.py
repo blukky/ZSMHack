@@ -89,6 +89,9 @@ def start(request):
 
 def price(request):
     return render(request, 'base.html')
+    
+def lk(request):
+    return render(request, 'lk.html')
 
 def remove_product(request):
     return render(request, 'base.html')
@@ -104,9 +107,9 @@ def add_product(request):
 
 ######################## AJAX
 
-def select_region(request):
-    if request.method == 'POST':
-
-    return JsonResponse
+# def select_region(request):
+#     if request.method == 'POST':
+# 
+#     return JsonResponse
 
 

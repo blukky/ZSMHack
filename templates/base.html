@@ -39,26 +39,39 @@
             color: rgba(0, 0, 0, 0.4);
 
         }
+
         a:hover {
-    color: #ffffff; /* Цвет ссылки при наведении на нее курсора мыши */
-    text-decoration: none; /* Добавляем подчеркивание */
-   }
+            color: #ffffff; /* Цвет ссылки при наведении на нее курсора мыши */
+            text-decoration: none; /* Добавляем подчеркивание */
+        }
+
 
     </style>
 </head>
 
 <body>
 {% block content %}
+
+
 <nav class="navbar" style="background: url({% static 'images/navbar.png' %}) no-repeat">
     <div class="container">
         <div>
             <a class="" href="#">
-                <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
+                <img src="{% static 'images/sponsors.png' %}" alt="" width="130" height="auto">
             </a>
         </div>
 
-        <div class="" style="margin-right: 36%">
-            <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="126"></a>
+        <div class="d-flex">
+            <a class="" href="{% url 'main' %}" style="margin-right: 8%"><h5>Главная</h5></a>
+            <a class="" href="{% url 'main' %}" style="margin-right: 8%"><h5>Карта</h5></a>
+            <a class="" href="{% url 'lk' %}" style="margin-right: 8%"><h5>Помощь</h5></a>
+        </div>
+
+        <a style="margin-right: 11%" href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+
+        <div class="d-flex" style="margin-right: ">
+            <a class="" href="{% url 'login' %}" style="margin-right: 8%"><h5>Войти</h5></a>
+            <a class="" href="{% url 'reg' %}" style=""><h5>Зарегистрироваться</h5></a>
         </div>
     </div>
 </nav>

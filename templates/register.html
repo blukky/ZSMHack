@@ -40,8 +40,8 @@
         </a>
 
     </div>
-    <div class="" href="#" style="" align="center">
-        <img src="{% static 'images/villem.png' %}" width="375" height="126">
+    <div class="" style="" align="center">
+        <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="126"></a>
     </div>
 
     <div align="center" class="d-grid">
@@ -57,21 +57,23 @@
                         <i class="fa fa-download"></i> Загрузить фотографию
                     </label><input id="file-upload" type="file" name="avatar" accept="image/*"></div>
             </div>
-            <div id="div_id_email" class="form-group"><label for="id_email" class=" requiredField">
+            <div id="div_id_email" class="form-group mt-2"><label for="id_email" class=" requiredField">
                 Электронная почта: </label>
                 <div class=""><input type="email"
+                                     placeholder="Электронная почта"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="email" class="form-control emailinput form-control"
                                      maxlength="255" required="" id="id_email"></div>
             </div>
-            <div id="div_id_phone" class="form-group"><label for="id_phone" class="">
+            <div id="div_id_phone" class="form-group mt-2"><label for="id_phone" class="">
                 Номер телефона: </label>
                 <div class=""><input type="text"
+                                     placeholder="+7(999)999-99-99"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="phone" class="form-control textinput textInput form-control"
                                      maxlength="11" id="id_phone"></div>
             </div>
-            <div id="div_id_who" class="form-group"><label for="id_who" class=" requiredField">
+            <div id="div_id_who" class="form-group mt-2"><label for="id_who" class=" requiredField">
                 Статус пользователя: </label>
                 <div class="">
                     <select name="who" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
@@ -81,24 +83,27 @@
                     </select>
                 </div>
             </div>
-            <div id="div_id_username" class="form-group"><label for="id_username" class=" requiredField">
+            <div id="div_id_username" class="form-group mt-2"><label for="id_username" class=" requiredField">
                 Имя пользователя: </label>
                 <div class=""><input type="text"
+                                     placeholder="Логин"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="username" class="form-control textinput textInput form-control"
                                      required="" id="id_username"></div>
             </div>
-            <div id="div_id_password1" class="form-group"><label for="id_password1" class=" requiredField">
+            <div id="div_id_password1" class="form-group mt-2"><label for="id_password1" class=" requiredField">
                 Пароль:</label>
                 <div class=""><input type="password"
+                                     placeholder="Пароль"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="password1"
                                      class="form-control textinput textInput form-control" required=""
                                      id="id_password1"></div>
             </div>
-            <div id="div_id_password2" class="form-group"><label for="id_password2" class=" requiredField">
+            <div id="div_id_password2" class="form-group mt-2"><label for="id_password2" class=" requiredField">
                 Повторите пароль:</label>
                 <div class=""><input type="password"
+                                     placeholder="Повторите пароль"
                                      style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
                                      name="password2"
                                      class="form-control textinput textInput form-control" required=""

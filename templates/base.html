@@ -10,7 +10,7 @@
           integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
     <title>{% block title %} Главная {% endblock %}</title>
-<!---->
+    {% block style %} {% endblock %}
     <style type="text/css">
         .head_info {
             position: absolute;
@@ -27,13 +27,22 @@
             top: -200px;
         }
 
+
         body {
-            background: url({% static 'images/fon.jpg' %}) no-repeat;
-            -moz-background-size: 100%; /* Firefox 3.6+ */
-            -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
-            -o-background-size: 100%; /* Opera 9.6+ */
-            background-size: 100%; /* Современные браузеры */
+            /*height: 200px;*/
+            background: linear-gradient(to bottom, rgba(255, 234, 204, 0.65), rgba(0, 0, 0, 0.65));
+
         }
+
+        a {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.4);
+
+        }
+        a:hover {
+    color: #ffffff; /* Цвет ссылки при наведении на нее курсора мыши */
+    text-decoration: none; /* Добавляем подчеркивание */
+   }
 
     </style>
 </head>
@@ -48,27 +57,115 @@
             </a>
         </div>
 
-        <div class=""  style="margin-right: 36%">
+        <div class="" style="margin-right: 36%">
             <img src="{% static 'images/villem.png' %}" width="375" height="126">
         </div>
     </div>
 </nav>
 
-<div class="video " id="video-bg">
-    <video width="100%" height="auto" autoplay="autoplay" loop>
+<div class=" " id="video-bg" style="margin-bottom: -10px">
+    <video width="100%" height="auto" preload="auto" autoplay="true" loop="true" muted="muted">
         <source src="{% static 'images/video.mp4' %}" type="video/mp4">
     </video>
 </div>
+
 <div align="center" class="">
-    <a class="head_info" href="{% url 'start' %}" style="margin-top: 30%"><img src="{% static 'images/butStart.png' %}" width="15%"
-                                                      height="auto"></a>
+    <a class="head_info" href="{% url 'start' %}" style="margin-top: 30%"><img src="{% static 'images/butStart.png' %}"
+                                                                               width="15%"
+                                                                               height="auto"></a>
 </div>
 <div align="center">
     <a class="head_info" href="#" style="margin-top: 45%"><img src="{% static 'images/logo.png' %}" width="15%"
-                                                      height="auto"></a>
+                                                               height="auto"></a>
 </div>
 
+
+<div class="" align="center" style="background: rgba(255, 234, 204, 0.65)">
+    <a class="" href="#" style="margin-top: 45%"><img src="{% static 'images/graph.png' %}" width="auto" height="auto"></a>
+
+</div>
 {% endblock %}
+<div class="d-flex" style="background: #303030">
+    <table class="table table-borderless" style="width: 50%; margin-left: 10%; margin-top: 2%; color: white">
+        <thead>
+        <tr>
+            <th scope="col">Villem</th>
+            <th scope="col">Сервисы</th>
+            <th scope="col"></th>
+            <!--      <th scope="col"><img src="{% static 'images/villem.png' %}" alt="" width="auto" height="40px"></th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>О сервисе</td>
+            <td>Продвижение предложения</td>
+            <td>Помощь</td>
+            <!--      <td><img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78"></td>-->
+        </tr>
+        <tr>
+            <td>Реклама на сайте</td>
+            <td>Продвижение производства</td>
+            <td>Каталог</td>
+            <!--        <td><img src="{% static 'images/logo.png' %}" width="auto" height="40px"></td>-->
+
+        </tr>
+        <tr>
+            <td>Партнерам</td>
+            <td></td>
+            <td>Поиск предложений</td>
+        </tr>
+        <tr>
+            <td>Инвесторам</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Инвесторам</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Защита персональных данных</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>API</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-borderless" style="width: 20%; margin-top: 2%; color: white">
+        <thead>
+        <tr>
+            <th scope="col">Мобильное приложение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><img src="{% static 'images/appstore.png' %}" alt="" width="auto" height="40px"></td>
+        </tr>
+        <tr>
+            <td><img src="{% static 'images/playmarket.png' %}" alt="" width="auto" height="40px"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <table class="table table-borderless" style="width: 20%; margin-top: 2%; color: white">
+
+        <tbody>
+        <tr>
+            <td><img src="{% static 'images/villem.png' %}" alt="" width="auto" height="40px"></td>
+        </tr>
+        <tr>
+            <td><img src="{% static 'images/sponsors.png' %}" alt="" width="auto" height="40px"></td>
+        </tr>
+        <tr>
+            <td><img src="{% static 'images/logo.png' %}" alt="" width="auto" height="40px"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
 </body>
 
 <script>

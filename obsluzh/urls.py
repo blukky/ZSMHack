@@ -14,7 +14,7 @@ urlpatterns = [
     path('start', start, name='start'),
     path('main', main, name='main'),
 
-    path('region', select_region, name='region'),
+    path('region/', select_region, name='region'),
 
 
     path('price', price, name='price'),

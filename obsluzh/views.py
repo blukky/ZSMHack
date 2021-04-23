@@ -319,9 +319,12 @@ def catalog(request, reg, who):
 
 def other_lk(request, pk):
     other_user = MyUser.objects.get(pk=pk)
-
-
-    data = {'user': get_user(request),' other_user': other_user}
+    price_list = PriceList.objects.get(owner=other_user)
+    products = price_list.products.all()
+    count_order_to = len(Order.objects.filter(to_user=other_user.id))
+    count_order_from = len(Order.objects.filter(from_user=other_user.id))
+    count = [count_order_to, count_order_from]
+    data = {'user': get_user(request),' other_user': other_user, 'products':products, 'count': count}
 
     return render(request, 'other_lk.html', data)
 

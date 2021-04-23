@@ -16,7 +16,7 @@ class MyUser(models.Model):
     avatar = models.ImageField(blank=True, null=True, verbose_name="Логотип")
     phone = models.CharField(max_length=11, null=True, blank=True, verbose_name="Номер телефона")
     email = models.EmailField(max_length=255, verbose_name="Электронная почта")
-    obl = models.CharField(max_length=255, verbose_name='Ваше расположение')
+    obl = models.CharField(max_length=255, verbose_name='Ваш регион')
     who = models.CharField(max_length=255, choices=WHO, default='Покупатель', verbose_name='Статус пользователя')
 
     def __unicode__(self):

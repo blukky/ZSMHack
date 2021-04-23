@@ -4,33 +4,52 @@
 
 {% block title %} Авторизация {% endblock %}
 
+{% block style %}
+    <style type="text/css">
+        label {
+            margin-left: 20px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
-<div class="d-flex" style="margin: 2%">
-    <a class="" href="#">
-        <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
-    </a>
+    <div class="d-flex" style="margin: 2%">
+        <a class="" href="#">
+            <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
+        </a>
 
-</div>
-<div class="" href="#" style="" align="center">
-    <img src="{% static 'images/villem.png' %}" width="375" height="126">
-</div>
+    </div>
+    <div class="" style="" align="center">
+        <img src="{% static 'images/villem.png' %}" width="375" height="126">
+    </div>
 
-<div align="center" class="d-grid" style="color: white">
-    <h3 class="mt-4">Авторизация</h3>
-    <form method="post" class="mx-auto mt-2 fs-5" style="color: white">
-        {% csrf_token %}
+    <div align="center" class="d-grid" style="color: white">
+        <h3 class="mt-4">Авторизация</h3>
+        <form method="post" class="mx-auto mt-2 fs-5 mb-5" style="color: white; text-align: left">
+            {% csrf_token %}
+            <div id="div_id_username" class="form-group mb-3"><label for="id_username" class=" requiredField">
+                Имя пользователя:</label>
+                <div class=""><input type="text" name="username" placeholder="Логин"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69); color: #7F7F7F"
+                                     class="form-control textinput textInput form-control"  maxlength="150" required=""
+                                     id="id_username">
+                </div>
+            </div>
+            <div id="div_id_password" class="form-group mb-3"><label for="id_password" class=" requiredField">
+                Пароль: </label>
+                <div class=""><input type="password" placeholder="Пароль" name="password"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69); color: #7F7F7F"
+                                     class="form-control textinput textInput form-control"
+                                     equired="" id="id_password"></div></div>
 
-<div id="div_id_username" class="form-group"> <label for="id_username" class=" requiredField">
-                Имя пользователя<span class="asteriskField">*</span> </label> <div class=""> <input type="text" name="username" class="form-control textinput textInput form-control" style="margin: 10px 0; color: #7F7F7F" maxlength="150" required="" id="id_username"> </div> </div> <div id="div_id_password" class="form-group"> <label for="id_password" class=" requiredField">
-                Пароль:<span class="asteriskField">*</span> </label> <div class=""> <input type="password" name="password" class="form-control textinput textInput form-control" style="margin: 10px 0; color: #7F7F7F" required="" id="id_password"> </div> </div>
-
-        <button type="submit" class="btn"><img src="/static/images/butSignIn.png" width="200" height="auto"></button>
-    </form>
-    <form method="post" class="mx-auto mt-2 fs-5" style="color: white">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn"><img src="{% static 'images/butSignIn.png' %}" width="200" height="auto"></button>
-    </form>
-</div>
+            <button type="submit" class="btn"><img src="/static/images/butSignIn.png" width="200" height="auto">
+            </button>
+        </form>
+    </div>
 {% endblock %}

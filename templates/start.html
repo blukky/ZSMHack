@@ -6,8 +6,12 @@
 {% block style %}
 <style type="text/css">
 select {
+
     text-align-last: center;
-text-align: center;
+    text-align: center;
+}
+option{
+    color: #0f0f0f;
 }
 
 </style>
@@ -32,18 +36,16 @@ text-align: center;
     <img src="{% static 'images/villem.png' %}" width="375" height="126">
 </div>
 
-<div class="d-grid gap-1 col-3 mx-auto" align="center">
+<div id="region" class="d-grid gap-1 col-3 mx-auto" align="center">
     <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
-<select class="form-select  fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
-      <option>Выберите1</option>
-      <option>Выберите2</option>
+<select id="select_region" class="form-select  fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
+    {% for item in region %}
+        <option value="">{{ item }}</option>
+    {% endfor %}
 </select>
 </div>
 
-<div class="d-grid gap-1 col-3 mx-auto" align="center">
-    <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Вы выбрали:</h5>
-    <h5 class="" style="color: rgba(255,255,255,1)">Вологодская область</h5>
-
+<div id="" class="d-grid gap-1 col-3 mx-auto" align="center">
     <h5 class="mt-2" style="color: rgba(255,255,255,0.5)">В данном регионе найдено:</h5>
 <select class="form-select fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
       <option>Выберите1</option>
@@ -60,6 +62,10 @@ text-align: center;
     <a class="" href="#">
         <img src="{% static 'images/butPost.png' %}" width="30%" height="auto"></a>
 </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'build/js/main.js' %}"></script>
 {% endblock %}
 
 

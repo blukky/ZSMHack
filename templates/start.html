@@ -29,6 +29,7 @@ option{
     <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="126"></a>
 </div>
 
+    {% csrf_token %}
 <div id="region" class="d-grid gap-1 col-3 mx-auto" align="center">
     <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
 <select id="select_region" class="form-select  fs-5" style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">

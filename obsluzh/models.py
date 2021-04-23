@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 class MyUser(models.Model):
 
     WHO = (
-        ('Покупатель', "Покупатель"),
-        ('Продавец', "Продавец"),
+        ('Производитель', "Производитель"),
+        ('Поставщик', "Поставщик"),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -42,15 +42,21 @@ class Category(models.Model):
 
 
 class Ptoduct(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    WHO = (
+        ('Производитель', "Производитель"),
+        ('Поставщик', "Поставщик"),
+    )
+    parent = models.IntegerField(verbose_name='Автор')
     name = models.CharField(max_length=255, verbose_name='Наименование продукта')
     photo = models.ImageField(upload_to='product/', verbose_name='Фотография продукта')
-    start_price = models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Цена на продукт')
-    opt_price = models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Оптовая цена')
+    info = models.TextField(verbose_name='Описание услуги')
+    status = models.CharField(max_length=255, choices=WHO, default='Производитель', verbose_name='От кого')
+    reg = models.CharField(max_length=255, verbose_name='Регион')
+    start_price = models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Цена на услугу')
 
     class Meta:
-        verbose_name = 'Продукт'
-        verbose_name_plural = 'Продукты'
+        verbose_name = 'Услуга'
+        verbose_name_plural = 'Услуги'
 
     def __str__(self):
         return self.name
@@ -80,27 +86,20 @@ class OrderList(models.Model):
         return f'Лист заказов {self.owner}'
 
 class Order(models.Model):
-    STATUS = (
-        ("Запланирован", "Запланирован"),
-        ("Отменен", "Отменен"),
-        ("Готов", "Готов")
-    )
+    product = models.IntegerField(verbose_name='Продукт')
     fio = models.CharField(max_length=255, null=True, verbose_name="ФИО")
-    phone_number = models.CharField(max_length=16, null=True, blank=True, verbose_name="Номер телефона:")
-    address = models.CharField(max_length=255, verbose_name='Адрес доставки')
-    price = models.PositiveIntegerField(null=True, blank=True, verbose_name="Предварительная цена")
-    status = models.CharField(max_length=255, choices=STATUS, default="Запланирован", verbose_name="статус")
-    hour = models.CharField(max_length=2, verbose_name="Час")
-    day = models.CharField(max_length=2, verbose_name="День")
-    mounth = models.CharField(max_length=10, verbose_name="Месяц")
-    year = models.CharField(max_length=4, verbose_name="Год")
+    phone_number = models.CharField(max_length=16, verbose_name="Номер телефона:")
+    price = models.PositiveIntegerField(null=True, blank=True, verbose_name="Предлагаемая цена")
     comment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Комментарий:")
+    status = models.IntegerField(verbose_name='Количество просмотров')
+    to_user = models.IntegerField(verbose_name='Кому')
+    from_user = models.IntegerField()
 
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
     def __str__(self):
-        return f"Заказ {self.day} {self.mounth} {self.year} на {self.hour}:00 "
+        return f"Заказ {self.fio}"
 
 

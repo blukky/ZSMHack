@@ -41,7 +41,20 @@
         <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
     </div>
 
-<img src="{% static 'images/ava.png' %}" width="auto" height="auto">
+
+<img src="{{ user.avatar.url }}" style="border-radius: 50%" width="250px" height="250px">
+
+    <div class="row">
+        <div class="col">{{ user.user.username }} </div>
+        <div class="col">{{ user.email }}</div>
+    </div>
+    <div class="row">
+        <div class="col">{{ user.phone }} </div>
+        <div class="col">{{ user.obl }}</div>
+    </div>
+    <div align="center">
+        <a href="{% url 'price' %}">Мои услуги</a>
+    </div>
 
 
 

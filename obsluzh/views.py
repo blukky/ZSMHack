@@ -188,7 +188,7 @@ def map(request):
 
     map = map._repr_html_()
 
-    context = {'map': map}
+    context = {'map': map, 'user': get_user(request)}
     conn.close()
     return render(request, 'map.html', context)
 
@@ -210,20 +210,78 @@ def start(request):
     data = {'region': region, 'user':get_user(request), 'pos':pos}
     return render(request, 'start.html', data)
 
-def price(request):
-    return render(request, 'base.html')
     
 def lk(request):
-    return render(request, 'lk.html')
+    data = {'user': get_user(request)}
+    return render(request, 'lk.html', data)
 
-def remove_product(request):
-    return render(request, 'base.html')
+####################################
+# Лист услуг
+####################################
+def remove_product(request, pk):
 
-def reform_product(request):
-    return render(request, 'base.html')
+    return redirect('price')
+
+def remove_category(request, pk):
+    return redirect('price')
+
+def reform_product(request, pk):
+
+    return render(request, 'reform_product.html')
+
+def reform_category(request, pk):
+
+    return render(request, 'reform_category.html.html')
 
 def add_product(request):
-    return render(request, 'base.html')
+    return render(request, 'add_product.html.html')
+
+def add_category(request):
+    return render(request, 'add_category.html.html')
+
+def price(request):
+    return render(request, 'price-list.html.html')
+
+def price_info(request, pk):
+    product = Ptoduct.objects.get(pk=pk)
+    data = {'user': get_user(request), 'product': product}
+
+    return render(request, 'product_detail.html', data)
+
+#####################################
+
+def catalog(request, reg, who):
+    reg = reg.replace('_', " ")
+    product = Ptoduct.objects.filter(status=who, reg=reg)
+
+    data = {'user': get_user(request), 'products': product}
+
+    return render(request, 'catalog.html', data)
+
+
+def other_lk(request, pk):
+    other_user = MyUser.objects.get(pk=pk)
+
+
+    data = {'user': get_user(request),' other_user': other_user}
+
+    return render(request, 'other_lk.html', data)
+
+def info_product(request, pk):
+    product = Ptoduct.objects.get(pk=pk)
+    avtor = MyUser.objects.get(pk=product.parent)
+    data = {'user': get_user(request), 'product': product, 'avtor':avtor}
+    return render(request, 'info_product.html', data)
+
+def create_order(request, pk):
+
+    data = {}
+    return render(request, 'create_order.html', data)
+
+
+
+
+
 
 
 

@@ -69,10 +69,17 @@
 
         <a style="margin-right: 11%" href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
 
-        <div class="d-flex" style="margin-right: ">
-            <a class="" href="{% url 'login' %}" style="margin-right: 8%"><h5>Войти</h5></a>
+        {% if request.user.is_authenticated %}
+            <div class="d-flex" >
+                <div style="color: rgba(0, 0, 0, 0.4);" ><h5>Добро пожаловать, <a href="{% url 'lk' %}">{{ user.username }}</a> | </h5></div>
+                <div><a href="{% url 'logout' %}"><h5>Выход</h5></a></div>
+            </div>
+        {% else %}
+        <div class="d-flex" >
+        <a class="" href="{% url 'login' %}" style="margin-right: 20%"><h5>Войти</h5></a>
             <a class="" href="{% url 'reg' %}" style=""><h5>Зарегистрироваться</h5></a>
         </div>
+        {% endif %}
     </div>
 </nav>
 

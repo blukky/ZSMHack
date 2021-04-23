@@ -17,6 +17,7 @@ urlpatterns = [
     path('lk', lk, name='lk'),
 
     # path('region', select_region, name='region'),
+    path('region/', select_region, name='region'),
 
 
     path('price', price, name='price'),

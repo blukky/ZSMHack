@@ -84,7 +84,9 @@ def profile(request):
 def start(request):
     df = pd.read_csv('regions.csv')
     region = np.array(df['Облать'])
-    data = {'region': region, 'user':get_user(request)}
+    df = pd.read_csv('Поселок.csv')
+    pos = np.array(df['Поселок'])
+    data = {'region': region, 'user':get_user(request), 'pos':pos}
     return render(request, 'start.html', data)
 
 def price(request):
@@ -107,9 +109,14 @@ def add_product(request):
 
 ######################## AJAX
 
-# def select_region(request):
-#     if request.method == 'POST':
-# 
-#     return JsonResponse
+def select_region(request):
+    print(request.POST)
+    if request.method == 'POST':
+        data = dict()
+        df = pd.read_csv('Поселок.csv')
+        pos = np.array(df[df['Область']==request.POST['region']]['Поселок'])
+        for i in range(len(pos)):
+            data[i] = pos[i]
+        return JsonResponse(data)
 
 

@@ -16,6 +16,7 @@ class MyUser(models.Model):
     avatar = models.ImageField(blank=True, null=True, verbose_name="Логотип")
     phone = models.CharField(max_length=11, null=True, blank=True, verbose_name="Номер телефона")
     email = models.EmailField(max_length=255, verbose_name="Электронная почта")
+    obl = models.CharField(max_length=255, verbose_name='Ваше расположение')
     who = models.CharField(max_length=255, choices=WHO, default='Покупатель', verbose_name='Статус пользователя')
 
     def __unicode__(self):
@@ -43,6 +44,7 @@ class Category(models.Model):
 class Ptoduct(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, verbose_name='Наименование продукта')
+    photo = models.ImageField(upload_to='product/', verbose_name='Фотография продукта')
     start_price = models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Цена на продукт')
     opt_price = models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Оптовая цена')
 

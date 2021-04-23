@@ -19,7 +19,6 @@ class UserRegisterForm(forms.ModelForm):
         'who': forms.Select(attrs={'class': 'form-control'})
         }
 
-
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'margin: 10px 0; color: #7F7F7F'}))

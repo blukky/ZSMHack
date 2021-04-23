@@ -70,9 +70,10 @@ def register(request):
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
-    return redirect('home')
+    return redirect('start')
 
 def main(request):
+    data = {'user': get_user(request)}
     return render(request, 'base.html')
 
 def profile(request):

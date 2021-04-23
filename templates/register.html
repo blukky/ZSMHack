@@ -5,49 +5,113 @@
 {% block title %} Регистрация {% endblock %}
 
 {% block style %}
-<style type="text/css">
+    <style type="text/css">
+        label {
+            margin-left: 20px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.5);
+        }
 
+        input {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
 
-</style>
+        select {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 
 
 {% block content %}
-<div class="d-flex" style="margin: 2%">
-    <a class="" href="#">
-        <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
-    </a>
+    <div class="d-flex" style="margin: 2%">
+        <a class="" href="#">
+            <img src="{% static 'images/sponsors.png' %}" alt="" width="188" height="78">
+        </a>
 
-</div>
-<div class="" href="#" style="" align="center">
-    <img src="{% static 'images/villem.png' %}" width="375" height="126">
-</div>
+    </div>
+    <div class="" href="#" style="" align="center">
+        <img src="{% static 'images/villem.png' %}" width="375" height="126">
+    </div>
 
-<div align="center" class="d-grid">
-    <form class="mx-auto mt-5 fs-5" method="post" enctype="multipart/form-data" style="color: white">
-    {% csrf_token %}
+    <div align="center" class="d-grid">
+        <form class="mx-auto mt-5 fs-5" method="post" enctype="multipart/form-data"
+              style="color: white; text-align: left">
+            {% csrf_token %}
 
-<div id="div_id_avatar" class="form-group"> <label for="id_avatar" class="">
-                Логотип
-            </label> <div class=""> <input type="file" name="avatar" class="form-control fileinput fileUpload form-control-file" accept="image/*" id="id_avatar"> </div> </div> <div id="div_id_email" class="form-group"> <label for="id_email" class=" requiredField">
-                Электронная почта<span class="asteriskField">*</span> </label> <div class=""> <input type="email" name="email" class="form-control emailinput form-control" maxlength="255" required="" id="id_email"> </div> </div> <div id="div_id_phone" class="form-group"> <label for="id_phone" class="">
-                Номер телефона
-            </label> <div class=""> <input type="text" name="phone" class="form-control textinput textInput form-control" maxlength="11" id="id_phone"> </div> </div> <div id="div_id_who" class="form-group"> <label for="id_who" class=" requiredField">
-                Статус пользователя<span class="asteriskField">*</span> </label> <div class=""> <select name="who" class="form-control select form-control" id="id_who"> <option value="Покупатель" selected="">Покупатель</option> <option value="Продавец">Продавец</option>
+            <div id="div_id_avatar" class="form-group"><label for="id_avatar" class="">
+                Аватар:
+            </label>
+                <div class="" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
+                    <label for="file-upload" class="custom-file-upload text-dark">
+                        <i class="fa fa-download"></i> Загрузить фотографию
+                    </label><input id="file-upload" type="file" name="avatar" accept="image/*"></div>
+            </div>
+            <div id="div_id_email" class="form-group"><label for="id_email" class=" requiredField">
+                Электронная почта: </label>
+                <div class=""><input type="email"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                     name="email" class="form-control emailinput form-control"
+                                     maxlength="255" required="" id="id_email"></div>
+            </div>
+            <div id="div_id_phone" class="form-group"><label for="id_phone" class="">
+                Номер телефона: </label>
+                <div class=""><input type="text"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                     name="phone" class="form-control textinput textInput form-control"
+                                     maxlength="11" id="id_phone"></div>
+            </div>
+            <div id="div_id_who" class="form-group"><label for="id_who" class=" requiredField">
+                Статус пользователя: </label>
+                <div class="">
+                    <select name="who" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                            class="form-select" id="id_who">
+                        <option value="Покупатель" selected="">Покупатель</option>
+                        <option value="Продавец">Продавец</option>
+                    </select>
+                </div>
+            </div>
+            <div id="div_id_username" class="form-group"><label for="id_username" class=" requiredField">
+                Имя пользователя: </label>
+                <div class=""><input type="text"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                     name="username" class="form-control textinput textInput form-control"
+                                     required="" id="id_username"></div>
+            </div>
+            <div id="div_id_password1" class="form-group"><label for="id_password1" class=" requiredField">
+                Пароль:</label>
+                <div class=""><input type="password"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                     name="password1"
+                                     class="form-control textinput textInput form-control" required=""
+                                     id="id_password1"></div>
+            </div>
+            <div id="div_id_password2" class="form-group"><label for="id_password2" class=" requiredField">
+                Повторите пароль:</label>
+                <div class=""><input type="password"
+                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                     name="password2"
+                                     class="form-control textinput textInput form-control" required=""
+                                     id="id_password2"></div>
+            </div>
 
-</select> </div> </div> <div id="div_id_username" class="form-group"> <label for="id_username" class=" requiredField">
-                Имя пользователя<span class="asteriskField">*</span> </label> <div class=""> <input type="text" name="username" class="form-control textinput textInput form-control" required="" id="id_username"> </div> </div> <div id="div_id_password1" class="form-group"> <label for="id_password1" class=" requiredField">
-                Пароль<span class="asteriskField">*</span> </label> <div class=""> <input type="password" name="password1" class="form-control textinput textInput form-control" required="" id="id_password1"> </div> </div> <div id="div_id_password2" class="form-group"> <label for="id_password2" class=" requiredField">
-                Повторите пароль<span class="asteriskField">*</span> </label> <div class=""> <input type="password" name="password2" class="form-control textinput textInput form-control" required="" id="id_password2"> </div> </div>
+            <button type="submit" style="font-size: 14pt" class="btn mt-4"><img src="/static/images/butReg.png"
+                                                                                width="350" height="auto"></button>
+        </form>
+    </div>
 
-    <button type="submit" style="font-size: 14pt" class="btn mt-4"><img src="/static/images/butReg.png" width="350" height="auto"></button>
-</form>
+{% endblock %}
 
-<form class="mx-auto mt-5 fs-5" method="post" enctype="multipart/form-data" style="color: white">
-    {% csrf_token %}
-    {{ form | crispy }}
-    <button type="submit" style="font-size: 14pt" class="btn mt-4"><img src="{% static 'images/butReg.png' %}" width="350" height="auto"></button>
-</form>
-</div>
+{% block script %}
 
 {% endblock %}

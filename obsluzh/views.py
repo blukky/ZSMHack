@@ -237,16 +237,20 @@ def remove_product(request, pk):
 
 def reform_product(request, pk):
     if request.method == 'POST':
-        if request.POST['photo']:
-        form = ProductForm(request.POST, request.FILES)
-
-        if form.is_valid():
+        if not request.POST['photo']:
             product = Ptoduct.objects.get(pk=pk)
+            print(product.photo.url)
+            _mutable = request.POST._mutable
+            request.POST._mutable = True
+            request.POST['photo'] = product.photo.url
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
             user = get_user(request)
-            path = settings.MEDIA_ROOT + f"/product/{form.cleaned_data['name']}.jpg"
-            im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
-            im.save(path, 'JPEG')
-
+            if request.POST['photo'] != product.photo.url:
+                path = settings.MEDIA_ROOT + f"/product/{form.cleaned_data['name']}.jpg"
+                im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
+                im.save(path, 'JPEG')
+            request.POST._mutable = _mutable
             product.category = form.cleaned_data['category']
             product.parent = user.pk
             product.name = form.cleaned_data['name']

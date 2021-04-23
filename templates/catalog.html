@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+    {% include 'nb_all.html' %}
+    <div align="center">
+        {% csrf_token %}
+        <div id="region" class="d-grid gap-1 col-3 mx-auto" align="center">
+            <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
+            <select id="select_region" class="form-select  fs-5"
+                    style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
+                {% for item in region %}
+                    <option value="{{ item }}"{% if item == user.obl %}selected{% endif %}>{{ item }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% if not products %}
+            <div>В вашем регионе еще не предлагали ни одной услуги!</div>
+        {% else %}
+            <div class="row">
+                {% for item in products %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top"
+                                                                               src="{{ item.photo.url }}" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="#">{{ item.name }}</a>
+                                </h4>
+                                <h5>{{ item.start_price }}</h5>
+                                <p class="card-text"><a href="{% url 'product_detail' pk=item.pk %}">Подробнее..</a></p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">{{ item.category }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

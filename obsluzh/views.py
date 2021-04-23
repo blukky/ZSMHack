@@ -91,7 +91,7 @@ def register(request):
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
-    return redirect('start')
+    return redirect('home')
 
 
 def map(request):
@@ -206,10 +206,8 @@ def map(request):
 
 def main(request):
     data = {'user': get_user(request)}
-    return render(request, 'base.html')
+    return render(request, 'base.html', data)
 
-def profile(request):
-    return render(request, 'base.html')
 
 def start(request):
     df = pd.read_csv('regions.csv')
@@ -274,13 +272,13 @@ def add_product(request):
             im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
             im.save(path, 'JPEG')
             poduct = Ptoduct.objects.create(parent=user.id,
-                                   category=form.cleaned_data['category'],
-                                   name=form.cleaned_data['name'],
-                                   photo=path,
-                                   info=form.cleaned_data['info'],
-                                   reg=user.obl,
-                                   status='Производитель' if user.who =='Поставщик' else 'Поставщик',
-                                   start_price=form.cleaned_data['start_price']
+                                           category=form.cleaned_data['category'],
+                                           name=form.cleaned_data['name'],
+                                           photo=path,
+                                           info=form.cleaned_data['info'],
+                                           reg=user.obl,
+                                           status='Производитель' if user.who =='Поставщик' else 'Поставщик',
+                                           start_price=form.cleaned_data['start_price']
                                    )
             poduct.save()
             price_list = get_price(request)
@@ -311,9 +309,10 @@ def price_info(request, pk):
 
 def catalog(request, reg, who):
     reg = reg.replace('_', " ")
+    df = pd.read_csv('regions.csv')
+    region = np.array(df['Облать'])
     product = Ptoduct.objects.filter(status=who, reg=reg)
-
-    data = {'user': get_user(request), 'products': product}
+    data = {'user': get_user(request), 'products': product,'region': region}
 
     return render(request, 'catalog.html', data)
 

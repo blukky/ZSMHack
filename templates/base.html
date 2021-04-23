@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load poll_extras %}
 
 
 <html lang="en">
@@ -71,7 +72,7 @@
 
         {% if request.user.is_authenticated %}
             <div class="d-flex" >
-                <div style="color: rgba(0, 0, 0, 0.4);" ><h5>Добро пожаловать, <a href="{% url 'lk' %}">{{ user.username }}</a> | </h5></div>
+                <div style="color: rgba(0, 0, 0, 0.4);" ><h5>Добро пожаловать, <a href="{% url 'lk' %}">{{ user.user.username }}</a> | </h5></div>
                 <div><a href="{% url 'logout' %}"><h5>Выход</h5></a></div>
             </div>
         {% else %}
@@ -90,7 +91,7 @@
 </div>
 
 <div align="center" class="">
-    <a class="head_info" href="{% url 'start' %}" style="margin-top: 30%"><img src="{% static 'images/butStart.png' %}"
+    <a class="head_info" href="{% if request.user.is_authenticated %}{% url 'catalog' reg=user.obl|to_url who=user.who %}{% else %}{% url 'start' %}{% endif %}" style="margin-top: 30%"><img src="{% static 'images/butStart.png' %}"
                                                                                width="15%"
                                                                                height="auto"></a>
 </div>

@@ -47,7 +47,7 @@ class Ptoduct(models.Model):
         ('Поставщик', "Поставщик"),
     )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    parent = models.IntegerField(verbose_name='Автор')
+    parent = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, verbose_name='Наименование продукта')
     photo = models.ImageField(upload_to='product/', verbose_name='Фотография продукта')
     info = models.TextField(verbose_name='Описание услуги')
@@ -87,14 +87,14 @@ class OrderList(models.Model):
         return f'Лист заказов {self.owner}'
 
 class Order(models.Model):
-    product = models.IntegerField(verbose_name='Продукт')
+    product = models.ForeignKey(Ptoduct, on_delete=models.CASCADE)
     fio = models.CharField(max_length=255, null=True, verbose_name="ФИО")
-    phone_number = models.CharField(max_length=16, verbose_name="Номер телефона:")
+    phone_number = models.CharField(max_length=18, verbose_name="Номер телефона:")
     price = models.PositiveIntegerField(null=True, blank=True, verbose_name="Предлагаемая цена")
     comment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Комментарий:")
     status = models.IntegerField(verbose_name='Количество просмотров')
-    to_user = models.IntegerField(verbose_name='Кому')
-    from_user = models.IntegerField()
+    to_user = models.ForeignKey(MyUser, related_name='to_user', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(MyUser, related_name='from_user', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Заказ'

@@ -7,8 +7,8 @@
     {{ product.name }}
     {{ product.info }}
     {{ product.start_price }}
-
-    <a href="{% url 'other_lk' pk=avtor.id %}">{{ avtor.user.username }}</a>
+    <a href="{% url 'create order' pk=product.id  %}">Заказать услугу</a>
+    <a href="{% url 'other_lk' pk=product.parent.id %}">{{ product.parent.user.username }}</a>
 
 
 {% endblock %}

@@ -39,14 +39,15 @@ option{
                 {% for item in products %}
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
-                            <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top"
+                            <a href="{% url 'info product' pk=item.id %}"><img class="card-img-top"
                                                                                src="{{ item.photo.url }}" alt=""></a>
                             <div class="card-body">
                                 <h4 class="card-title">
                                     <a href="#">{{ item.name }}</a>
                                 </h4>
                                 <h5>{{ item.start_price }}</h5>
-                                <p class="card-text"><a href="{% url 'product_detail' pk=item.pk %}">Подробнее..</a></p>
+                                <p class="card-text"><a href="{% url 'product_detail' pk=item.id %}">Подробнее..</a></p>
+                                <p class="card-text"><a href="{% url 'create order' pk=item.id %}">Заказать услугу</a></p>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">{{ item.category }}</small>

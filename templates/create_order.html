@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Создание заказа{% endblock %}
 
-</body>
-</html>
+
+{% block content %}
+    {% include 'nb_all.html' %}
+
+    <div align="center">
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form|crispy }}
+
+            <button class="btn btn-primary" type="submit">Создать заказ</button>
+
+        </form>
+    </div>
+
+
+{% endblock %}

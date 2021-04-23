@@ -43,6 +43,14 @@ def get_price(request):
             price = PriceList.objects.create(owner=user)
         return price
 
+def get_order_list(request):
+    if request.user.is_authenticated:
+        user = MyUser.objects.get(user=request.user)
+        price = OrderList.objects.filter(owner=user).first()
+        if not price:
+            price = OrderList.objects.create(owner=user)
+        return price
+
 def index(request):
     user = get_user(request)
     data = {'user': user}
@@ -243,7 +251,7 @@ def reform_product(request, pk):
             im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
             im.save(path, 'JPEG')
             product.category = form.cleaned_data['category']
-            product.parent = user.pk
+            product.parent = user
             product.name = form.cleaned_data['name']
             product.photo = path
             product.info = form.cleaned_data['info']
@@ -271,7 +279,7 @@ def add_product(request):
             path = settings.MEDIA_ROOT + f"/product/{form.cleaned_data['name']}.jpg"
             im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
             im.save(path, 'JPEG')
-            poduct = Ptoduct.objects.create(parent=user.id,
+            poduct = Ptoduct.objects.create(parent=user,
                                            category=form.cleaned_data['category'],
                                            name=form.cleaned_data['name'],
                                            photo=path,
@@ -319,31 +327,55 @@ def catalog(request, reg, who):
 
 def other_lk(request, pk):
     other_user = MyUser.objects.get(pk=pk)
-    price_list = PriceList.objects.get(owner=other_user)
-    products = price_list.products.all()
-    count_order_to = len(Order.objects.filter(to_user=other_user.id))
-    count_order_from = len(Order.objects.filter(from_user=other_user.id))
+    products = Ptoduct.objects.filter(parent=other_user)
+    count_order_to = len(Order.objects.filter(to_user=other_user))
+    count_order_from = len(Order.objects.filter(from_user=other_user))
     count = [count_order_to, count_order_from]
     data = {'user': get_user(request),'other_user': other_user, 'products':products, 'count': count}
-
     return render(request, 'other_lk.html', data)
 
 def info_product(request, pk):
     product = Ptoduct.objects.get(pk=pk)
-    avtor = MyUser.objects.get(pk=product.parent)
-    data = {'user': get_user(request), 'product': product, 'avtor': avtor}
+    data = {'user': get_user(request), 'product': product}
     return render(request, 'info_product.html', data)
 
 def create_order(request, pk):
-
-    data = {}
-    return render(request, 'create_order.html', data)
+    if request.method =='POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            product = Ptoduct.objects.get(pk=pk)
+            order = Order.objects.create(
+                product=product,
+                fio=form.cleaned_data['fio'],
+                phone_number=form.cleaned_data['phone_number'],
+                price=form.cleaned_data['price'],
+                comment=form.cleaned_data['comment'],
+                status=0,
+                to_user=product.parent,
+                from_user=get_user(request)
+            )
+            order.save()
+            orderlist = get_order_list(request)
+            orderlist.orders.add(order)
+            orderlist.save()
+            return redirect('my order')
+        else:
+            data = {'user': get_user(request), 'form': form}
+            return render(request, 'create_order.html', data)
+    else:
+        form = OrderForm()
+        data = {'user':get_user(request), 'form':form}
+        return render(request, 'create_order.html', data)
 
 def my_order(request):
-    return render(request, '')
+    orders = Order.objects.filter(from_user=get_user(request))
+    data = {'orders': orders, 'user':get_user(request), 'title':"Мои заказы"}
+    return render(request, 'my_order.html', data)
 
 def my_predlozh(request):
-    return render(request)
+    orders = Order.objects.filter(to_user=get_user(request))
+    data = {'orders': orders, 'user':get_user(request), 'title':"Мои предложения"}
+    return render(request, 'my_order.html', data)
 
 
 

@@ -11,11 +11,12 @@ class UserRegisterForm(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ('avatar', 'email', 'phone', 'who')
+        fields = ('avatar', 'email', 'phone', 'obl', 'who')
         widgets = {
-        'avatar': forms.FileInput(attrs={'class':'form-control'}),
+        'avatar': forms.FileInput(attrs={'class': 'form-control'}),
         'email': forms.EmailInput(attrs={'class': 'form-control'}),
         'phone': forms.TextInput(attrs={'class': 'form-control'}),
+        'obl': forms.TextInput(attrs={'class': 'form-control'}),
         'who': forms.Select(attrs={'class': 'form-control'})
         }
 

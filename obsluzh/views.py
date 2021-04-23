@@ -278,6 +278,14 @@ def create_order(request, pk):
     data = {}
     return render(request, 'create_order.html', data)
 
+def my_order(request):
+    return render(request, '')
+
+def my_predlozh(request):
+    return render(request)
+
+
+
 
 
 

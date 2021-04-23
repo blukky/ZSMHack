@@ -7,6 +7,16 @@ from io import BytesIO
 from django.core.files import File
 from django.contrib.auth.models import User
 from .forms import *
+import folium
+import requests as r
+from bs4 import BeautifulSoup as bs
+import folium
+from folium.plugins import MarkerCluster
+from folium import IFrame
+import sqlite3
+from .models import *
+import random
+import numpy as np
 from django.forms.models import model_to_dict
 from django.contrib.auth import login, logout, authenticate
 from django.core.mail import EmailMessage, send_mail
@@ -74,6 +84,117 @@ def logout_user(request):
         logout(request)
     return redirect('start')
 
+
+def map(request):
+    #######################################################################################################
+
+    conn = sqlite3.connect("db_smz.file")
+    cursor = conn.cursor()
+
+    sql = 'select "Широта" from "Состав самозанятых"'
+    cursor.execute(sql)
+    x = cursor.fetchall()
+
+    sql = 'select "Долгота" from "Состав самозанятых"'
+    cursor.execute(sql)
+    y = cursor.fetchall()
+
+    sql = 'select "Дата регистрации" from "Состав самозанятых"'
+    cursor.execute(sql)
+    name = cursor.fetchall()
+
+    sql = 'select "Руководитель" from "Состав самозанятых"'
+    cursor.execute(sql)
+    ruk = cursor.fetchall()
+
+    sql = 'select "Адрес" from "Состав самозанятых"'
+    cursor.execute(sql)
+    address = cursor.fetchall()
+
+    # 'SELECT "Код","Тип ","Адрес","Руководитель","Наименование региона","Описание ОКВЭД"  FROM "Состав самозанятых" WHERE "Широта"="54,45277778"'
+
+    mass_x = list()
+    mass_y = list()
+    mass_name = list()
+    mass_ruk = list()
+    mass_address = list()
+
+    for i in range(len(x)):
+
+        try:
+            mass_x.append(float(x[i][0].replace(",", ".")))
+            mass_y.append(float(y[i][0].replace(",", ".")))
+            mass_name.append(str(name[i][0]))
+            mass_ruk.append(str(ruk[i][0]))
+            mass_address.append(str(address[i][0]))
+
+
+        except:
+            pass
+
+    # print(mass_address)
+
+    def color_change(elev):
+        if (elev < 2):
+            return ('green')
+        elif (1000 <= elev < 7):
+            return ('orange')
+        else:
+            return ('red')
+
+    map = folium.Map(location=[64.32087158, 93.515625], zoom_start=3, tiles='Stamen Terrain')
+
+    marker_cluster = MarkerCluster().add_to(map)
+
+    tooltip = "Подробнее..."
+    # def kachestvo():
+    #     return np.random.choice(['Низкое', 'Среднее', 'Высокое'], 1)[0]
+
+    html = """
+    <h1> This is a big popup</h1><br>
+    With a few lines of code...
+    <p>
+    <code>
+        from numpy import *<br>
+        exp(-2*pi)
+    </code>
+    </p>
+    """
+    # iframe = folium.Element.IFrame(html=html, width=500, height=300)
+    # popup = folium.Popup(iframe, max_width=2650)
+    popup = '\
+                <div align="center"> \
+                    HTML <br>\
+                    <iframe width="800" height="400" frameborder="0" scrolling="no" \
+                        src="//plotly.com/~wqsfedvf/1.embed"> \
+                    </iframe></div> \
+'
+
+    for i in range(len(mass_name)):
+        folium.Marker(location=[mass_x[i], mass_y[i]],
+                      popup=popup,
+
+                      # popup=f"Наименование: {mass_name[i]}\n\n \
+                      #         Руководитель: {mass_ruk[i]}\n\n \
+                      #         Адрес: {mass_address[i]}\n\n \
+
+                      #             ",  
+
+                      tooltip=tooltip,
+                      icon=folium.Icon(color="darkred", icon="glyphicon glyphicon-home"),  # color="blue"
+                      ).add_to(marker_cluster)
+
+    html_string = map.get_root().render()
+
+    map = map._repr_html_()
+
+    context = {'map': map}
+    conn.close()
+    return render(request, 'map.html', context)
+
+
+#######################################################################################################
+
 def main(request):
     data = {'user': get_user(request)}
     return render(request, 'base.html')
@@ -91,6 +212,9 @@ def start(request):
 
 def price(request):
     return render(request, 'base.html')
+    
+def lk(request):
+    return render(request, 'lk.html')
 
 def remove_product(request):
     return render(request, 'base.html')

@@ -13,7 +13,10 @@ urlpatterns = [
 
     path('start', start, name='start'),
     path('main', main, name='main'),
+    path('map', map, name='map'),
+    path('lk', lk, name='lk'),
 
+    # path('region', select_region, name='region'),
     path('region/', select_region, name='region'),
 
 

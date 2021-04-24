@@ -22,13 +22,13 @@ jQuery(function () {
             success: function (data) {
                 var size = Object.keys(data).length;
                 if (size == 1){
-                    var findpos = 'найден';
-                    var pos = 'поселок';
+                    var findpos = 'найден ';
+                    var pos = ' поселок';
                 }
                 else if (size == 2 || size == 3 || size == 4)
                 {
-                    var findpos = 'найдено';
-                    var pos = 'поселка';
+                    var findpos = 'найдено ';
+                    var pos = ' поселка';
                 }
                 else
                     {
@@ -37,22 +37,27 @@ jQuery(function () {
                 }
                     $('#div_country h5').text('В данном регионе '+ findpos+ size + pos);
                 if (size != 0 ) {
+                    var url =  "/catalog_"+$('#select_region').val().replace(" ", "_");
                     $('#country').show();
                     $('#div_country h5').show();
+                    $('#status').show();
                     Object.keys(data).forEach(function (key) {
                         $('.country').each(function () {
                             if ($(this).val() == data[key]) {
+                                $('#country').val($(this).val());
                                 $(this).show();
                             }
                         });
-
                     });
+                    $('#prod').attr('href', url+"_Производитель");
+                    $('#postav').attr('href', url+"_Поставщик");
                     $('#country').change(function () {
-                        $('#status').show();
+
                     });
                 }else{
                     var text = $('#div_country h5').text();
                     $('#div_country h5').text(text +' Выберите соседние регионы');
+                    $('#div_country h5').show();
                 }
             }
         });

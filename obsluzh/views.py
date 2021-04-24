@@ -105,7 +105,7 @@ def logout_user(request):
 def map(request):
     #######################################################################################################
 
-    conn = sqlite3.connect("db_smz.file")
+    conn = sqlite3.connect("SMZ.db")
     cursor = conn.cursor()
 
     sql = 'select "Широта" from "Состав самозанятых"'
@@ -116,34 +116,53 @@ def map(request):
     cursor.execute(sql)
     y = cursor.fetchall()
 
-    sql = 'select "Дата регистрации" from "Состав самозанятых"'
+    sql = 'select "Код" from "Состав самозанятых"'
+    cursor.execute(sql)
+    kod = cursor.fetchall()
+
+    sql = 'select "Тип " from "Состав самозанятых"'
     cursor.execute(sql)
     name = cursor.fetchall()
-
-    sql = 'select "Руководитель" from "Состав самозанятых"'
-    cursor.execute(sql)
-    ruk = cursor.fetchall()
 
     sql = 'select "Адрес" from "Состав самозанятых"'
     cursor.execute(sql)
     address = cursor.fetchall()
 
+    sql = 'select "Руководитель" from "Состав самозанятых"'
+    cursor.execute(sql)
+    ruk = cursor.fetchall()
+
+    sql = 'select "Наименование региона" from "Состав самозанятых"'
+    cursor.execute(sql)
+    region = cursor.fetchall()
+
+    sql = 'select "Описание ОКВЭД" from "Состав самозанятых"'
+    cursor.execute(sql)
+    okved = cursor.fetchall()
+
     # 'SELECT "Код","Тип ","Адрес","Руководитель","Наименование региона","Описание ОКВЭД"  FROM "Состав самозанятых" WHERE "Широта"="54,45277778"'
 
     mass_x = list()
     mass_y = list()
+
+    mass_kod = list()
     mass_name = list()
-    mass_ruk = list()
     mass_address = list()
+    mass_ruk = list()
+    mass_region = list()
+    mass_okved = list()
 
     for i in range(len(x)):
 
         try:
             mass_x.append(float(x[i][0].replace(",", ".")))
             mass_y.append(float(y[i][0].replace(",", ".")))
+            mass_kod.append(str(kod[i][0]))
             mass_name.append(str(name[i][0]))
-            mass_ruk.append(str(ruk[i][0]))
             mass_address.append(str(address[i][0]))
+            mass_ruk.append(str(ruk[i][0]))
+            mass_region.append(str(region[i][0]))
+            mass_okved.append(str(okved[i][0]))
 
 
         except:
@@ -159,43 +178,128 @@ def map(request):
         else:
             return ('red')
 
-    map = folium.Map(location=[64.32087158, 93.515625], zoom_start=3, tiles='Stamen Terrain')
+    center_map = [64.32087158, 93.515625]
+    map = folium.Map(location=center_map, zoom_start=3, tiles='Stamen Terrain')
 
     marker_cluster = MarkerCluster().add_to(map)
 
     tooltip = "Подробнее..."
+
     # def kachestvo():
     #     return np.random.choice(['Низкое', 'Среднее', 'Высокое'], 1)[0]
 
-    html = """
-    <h1> This is a big popup</h1><br>
-    With a few lines of code...
-    <p>
-    <code>
-        from numpy import *<br>
-        exp(-2*pi)
-    </code>
-    </p>
-    """
-    # iframe = folium.Element.IFrame(html=html, width=500, height=300)
-    # popup = folium.Popup(iframe, max_width=2650)
-    popup = '\
-                <div align="center"> \
-                    HTML <br>\
-                    <iframe width="800" height="400" frameborder="0" scrolling="no" \
-                        src="//plotly.com/~wqsfedvf/1.embed"> \
-                    </iframe></div> \
-'
+    # df = pd.DataFrame(columns=['a','b','c','d','e','f'], index=['x','y'])
+    # df.loc['x'] = pd.Series({'a':'Наименование', 'b':'Адрес', 'c':'Руководитель', 'd':'Наименование региона', 'e':'ОКВЭД', 'f':'Описание ОКВЭД'})
+    # df.loc['y'] = pd.Series({'a':mass_name, 'b':mass_ruk, 'c':mass_address, 'd':3, 'e':1, 'f':1})
+
+    # 'SELECT "Код","Тип ","Адрес","Руководитель","Наименование региона","Описание ОКВЭД"  FROM "Состав самозанятых" WHERE "Широта"="54,45277778"'
+
+    df = {'Код': [mass_kod], 'Наименование': [mass_name], 'Адрес': [mass_address], 'Руководитель': [mass_ruk],
+          'Наименование региона': [mass_region], 'Описание ОКВЭД': [mass_okved]}
+    df = pd.DataFrame.from_dict(df)
+
+    print(df)
+
+    df.to_html()
+
+    import branca
+
+    def fancy_html(row):
+        # i = row
+        # mass_name=df['Наименование'].iloc[i]
+        # print("########################")
+        # print(mass_name)
+
+        html = """
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+        <html>
+        <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Стили</title>
+        <style type="text/css">
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            text-align: center;
+            border-collapse: collapse;
+            border-spacing: 5px;
+            background: #E1E3E0;
+            border-radius: 20px;
+            }
+            th {
+            font-size: 22px;
+            font-weight: 300;
+            padding: 12px 10px;
+            border-bottom: 2px solid #F56433;
+            color: #F56433;
+            }
+            tbody tr:nth-child(2) {
+            border-bottom: 2px solid #F56433;
+            }
+            td {
+            padding: 10px;
+            color: #8D8173;
+            }
+        </style>
+        </head>
+        <body>
+            <table>
+                <tr><th colspan="6">Подробнее:</th></tr>
+                <tr>
+                <td>Наименование</td>
+                <td>Адрес</td>
+                <td>Руководитель</td>
+                <td>Наименование региона</td>
+                <td>ОКВЭД</td>
+                <td>Описание ОКВЭД</td>
+                </tr>
+                <tr>
+                <td>ООО "СВ ГЛАСС ИНДАСТРИ"</td>
+                <td>601389, Владимирская обл, поселок Им Воровского, район Судогодский, улица Воровского, 10</td>
+                <td>Власов Владимир Геннадьевич</td>
+                <td>Владимирская область</td>
+                <td>23,1</td>
+                <td>Производство стекла и изделий из стекла</td>
+                </tr>
+            </table>
+        </body>
+        </html>
+        """
+        return html
+
+    #     popup = """
+    #                 <div align="center">
+    #                     <br>
+    #                     <iframe width="600" height="400" frameborder="0" scrolling="no"
+    #                         {{ html|safe }}
+    #                     </iframe></div>
+    # """
+
+    # <iframe src="https://www.youtube.com/embed/hvoD7ehZPcM?autoplay=1&amp;autohide=1" frameborder="0" allowfullscreen="" style="width="800" height="400""></iframe>
+
+    #     popup = '\
+    #                 <div align="center"> \
+    #                     Подробная информация: <br>\
+    #                     <iframe width="800" height="400" frameborder="0" scrolling="no" \
+    #                         src="//plotly.com/~wqsfedvf/1.embed"> \
+    #                     </iframe></div> \
+    # '
+    # iframe = branca.element.IFrame(html=html,width=800,height=250)
 
     for i in range(len(mass_name)):
+        html = fancy_html(i)
+
+        iframe = branca.element.IFrame(html=html, width=800, height=250)
+        popup = folium.Popup(iframe, parse_html=True)
+
         folium.Marker(location=[mass_x[i], mass_y[i]],
+
                       popup=popup,
 
                       # popup=f"Наименование: {mass_name[i]}\n\n \
                       #         Руководитель: {mass_ruk[i]}\n\n \
                       #         Адрес: {mass_address[i]}\n\n \
 
-                      #             ",  
+                      #             ",
 
                       tooltip=tooltip,
                       icon=folium.Icon(color="darkred", icon="glyphicon glyphicon-home"),  # color="blue"
@@ -205,7 +309,7 @@ def map(request):
 
     map = map._repr_html_()
 
-    context = {'map': map, 'user': get_user(request)}
+    context = {'map': map}
     conn.close()
     return render(request, 'map.html', context)
 
@@ -320,7 +424,7 @@ def catalog(request, reg, who):
     df = pd.read_csv('regions.csv')
     region = np.array(df['Облать'])
     product = Ptoduct.objects.filter(status=who, reg=reg)
-    data = {'user': get_user(request), 'products': product,'region': region}
+    data = {'user': get_user(request), 'products': product,'region': region, 'reg':reg}
 
     return render(request, 'catalog.html', data)
 
@@ -376,6 +480,11 @@ def my_predlozh(request):
     orders = Order.objects.filter(to_user=get_user(request))
     data = {'orders': orders, 'user':get_user(request), 'title':"Мои предложения"}
     return render(request, 'my_order.html', data)
+
+def info_order(request, pk):
+    order = Order.objects.get(pk=pk)
+    data = {'user':get_user(request), 'order': order}
+    return render(request, 'info_order.html', data)
 
 
 

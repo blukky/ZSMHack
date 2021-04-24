@@ -28,7 +28,7 @@ option{
             <select id="select_region" class="form-select  fs-5 mb-5"
                     style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
                 {% for item in region %}
-                    <option value="{{ item }}"{% if item == user.obl %}selected{% endif %}>{{ item }}</option>
+                    <option value="{{ item }}"{% if item == user.obl or item == reg %}selected{% endif %}>{{ item }}</option>
                 {% endfor %}
             </select>
         </div>

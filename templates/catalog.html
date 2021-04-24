@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Каталог{% endblock %}
 
 {% block style %}
@@ -16,31 +16,53 @@ option{
 .form-select {
     padding: 0
 }
+
+#rectangle {
+        width: 1230px;
+        height: 100px;
+        background: #4e4e4e;
+        border-radius: 50px 50px 0 0;
+        border: 0;
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
     {% include 'nb_all.html' %}
-    <div align="center">
-        {% csrf_token %}
+<div class="" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+</div>
+
+
+<div align="center">
+    {% csrf_token %}
+    <div class="mb-2 d-flex" id="rectangle" style="margin-left: ">
         <div id="region" class="d-grid gap-1 col-3 mx-auto" align="center">
             <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
             <select id="select_region" class="form-select  fs-5 mb-5"
                     style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
                 {% for item in region %}
-                    <option value="{{ item }}"{% if item == user.obl or item == reg %}selected{% endif %}>{{ item }}</option>
+                <option value="{{ item }}" {% if item == user.obl or item == reg %}selected{% endif %}>{{ item }}</option>
                 {% endfor %}
             </select>
+
         </div>
+        <h5 style="color: white; padding-top: 3%">Цена</h5>
+        <select id="" class="form-select"
+                    style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
+                <option>Поставщик</option>
+                <option>Производитель</option>
+            </select>
+    </div>
         {% if not products %}
             <div>В вашем регионе еще не предлагали ни одной услуги!</div>
         {% else %}
-            <div class="row">
+            <div class="row" align="center">
                 {% for item in products %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card h-100">
-                            <a href="{% url 'info product' pk=item.id %}"><img class="card-img-top"
-                                                                               src="{{ item.photo.url }}" alt=""></a>
+                <div class="col-lg-3 col-md-6 mb-4" style="margin-left: 6%; padding-left: -20px">
+                        <div class="card h-100" style="border-radius: 20px 20px 20px 20px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);">
+                            <a href="{% url 'info product' pk=item.id %}"><img class="card-img-top" style="margin: 2%; width: 300px; height: 300px" src="{{ item.photo.url }}" alt=""></a>
                             <div class="card-body">
                                 <h4 class="card-title">
                                     <a href="#">{{ item.name }}</a>
@@ -53,7 +75,8 @@ option{
                                 <small class="text-muted">{{ item.category }}</small>
                             </div>
                         </div>
-                    </div>
+
+                </div>
                 {% endfor %}
             </div>
         {% endif %}

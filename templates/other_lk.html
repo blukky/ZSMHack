@@ -1,18 +1,42 @@
 {% extends 'base.html' %}
+{% load static %}
+
 
 {% block title %}Профиль {{ other_user.user.username }}{% endblock %}
 
+{% block style %}
+<style type="text/css">
+#rectangle {
+    width: 1230px;
+    height: 130px;
+    background: #4e4e4e;
+    border-radius: 50px 50px 0 0;
+    border: 0;
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
     {% include 'nb_all.html' %}
-    <h1>{{ other_user.user.username }}</h1>
-    {{ count.0 }}
-    {{ count.1 }}
-    <div class="row">
+<div class="" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+</div>
+
+<div align="center">
+    <div class="mb-3 mt-3" align="center" id="rectangle" style="color:white; ">
+        <h1>Профиль {{ other_user.user.username }}</h1>
+        <h5>Количество сделок с пользователем: {{ count.0 }}</h5>
+        <h5>Количество сделок пользователя: {{ count.1 }}</h5>
+    </div>
+</div>
+
+
+    <div class="row" align="center">
         {% for item in products %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                    <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top"
-                                                                       src="{{ item.photo.url }}" alt=""></a>
+            <div class="col-lg-3 col-md-6 mb-4" style="margin-left: 6%; padding-left: -20px">
+                <div class="card h-100" style="border-radius: 20px 20px 20px 20px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);">
+                    <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top" style="margin: 2%; width: 300px; height: 300px" src="{{ item.photo.url }}" alt=""></a>
                     <div class="card-body">
                         <h4 class="card-title">
                             <a href="#">{{ item.name }}</a>

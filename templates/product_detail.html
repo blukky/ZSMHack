@@ -1,10 +1,46 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ product.name }}{% endblock %}
 
+{% block style %}
+<style type="text/css">
+    #rectangle {
+        width: 1200px;
+        height: 410px;
+        background: #ffffff;
+        border-radius: 50px;
+        border: 0;
+    }
+
+</style>
+{% endblock %}
 
 {% block content %}
-    {% include 'nb_all.html' %}
+{% include 'nb_all.html' %}
+<div class="" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+</div>
 
-{{ product.name }}
+<div align="center">
+
+    <div class="mb-4 mt-4" id="rectangle" style="margin-left:">
+        <div class="d-flex" style="color: gray;">
+            <div>
+                <img src="{{ product.photo.url }}" width="250" height="250" style="margin-top: 10%; margin-left: 10%; border-radius: 50px">
+                <div align="center" style="padding-left: 10%">
+                    <h4>Производитель: {{ product.reg }}</h4>
+                    <h4>Цена: {{ product.start_price }}</h4>
+                </div>
+            </div>
+            <div align="left" style="padding-left: 5%">
+                <h1 class="mt-4">{{ product.name }}</h1>
+                <h5>Категория: {{ product.category }}</h5>
+
+                <h4 style="padding-top: 2%">Описание:</h4>
+                <h5>{{ product.info }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

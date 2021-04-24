@@ -1,21 +1,69 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block title %}Создание заказа{% endblock %}
+
+{% block style %}
+    <style type="text/css">
+        label {
+            font-size: 1.25rem;
+        }
+
+        input, #file {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
+
+        select {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+    </style>
+{% endblock %}
 
 
 {% block content %}
     {% include 'nb_all.html' %}
 
-    <div align="center">
-        <form method="post">
-            {% csrf_token %}
+    <form class="gap-1 col-3 mx-auto" method="post" align="center" style="color: white">
+        {% csrf_token %}
+        <div id="div_fio" class="form-group mt-3"><label for="id_fio" class=" requiredField">
+            ФИО</label>
+            <div class=""><input type="text" name="fio" maxlength="255" class="textinput textInput form-control"
+                                 required="" id="id_fio" placeholder="ФИО"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"></div>
+        </div>
 
-            {{ form|crispy }}
+        <div id="div_id_phone_number" class="form-group mt-2"><label for="id_phone_number" class="">
+            Номер телефона для связи: </label>
+            <div class=""><input type="text"
+                                 placeholder="+7(999)999-99-99"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="phone_number" class="form-control textinput textInput form-control"
+                                 maxlength="17" id="id_phone_number"></div>
+        </div>
+        <div id="div_id_price" class="form-group mt-3"><label for="id_price" class=" requiredField">
+            Предлогаемая цена:</label>
+            <div class=""><input type="number" name="price" step="0.01" class="numberinput form-control"
+                                 required=""
+                                 id="id__price" placeholder="Предлагаемая цена"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"></div>
+        </div>
+        <div id="div_id_comment" class="form-group mt-3"><label for="id_comment" class=" requiredField">
+            Комментарий к заказу</label>
+            <div class=""><textarea name="comment" cols="40" rows="10" class="textarea form-control" required=""
+                                    id="id_comment"
+                                    style="border-radius: 30px; background: rgba(255,255,255,0.69)"></textarea>
+            </div>
+        </div>
 
-            <button class="btn btn-primary" type="submit">Создать заказ</button>
+        <button type="submit" class="btn mt-3 mb-3"><img src="/static/images/butCreate.png"
+                                                     width="150" height="auto"></button>
 
-        </form>
-    </div>
+    </form>
 
 
 {% endblock %}

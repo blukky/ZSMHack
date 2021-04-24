@@ -59,26 +59,12 @@
                                     style="border-radius: 30px; background: rgba(255,255,255,0.69)"></textarea>
             </div>
         </div>
-        <div class="btn btn-primary" id="card">Выбрать карту для списания</div>
-        <iframe width="500px" height="500px"
-                src="https://api.dev.walletone.com/p2p-iframe/KgX5SOAwqPgiGnjKR0TGKTyBEGp5E8baCpovOP6bgkXQhfH3kdSQ9P"
-                frameborder="0">
-        </iframe>
 
         <button type="submit" class="btn mt-3 mb-3"><img src="/static/images/butCreate.png"
                                                          width="150" height="auto"></button>
 
     </form>
 
-     <form method="post" action="https://wl.walletone.com/checkout/checkout/Index">
-                <input name="WMI_MERCHANT_ID" value="123456789012"/>
-                <input name="WMI_PAYMENT_AMOUNT" value="100.00"/>
-                <input name="WMI_CURRENCY_ID" value="643"/>
-                <input name="WMI_DESCRIPTION" value="Оплата демонстрационного заказа"/>
-                <input name="WMI_SUCCESS_URL" value="https://myshop.ru/w1/paid.php"/>
-                <input name="WMI_FAIL_URL" value="https://myshop.ru/w1/fail.php"/>
-                <input type="submit"/>
-            </form>
 
 
 {% endblock %}

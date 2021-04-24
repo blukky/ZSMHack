@@ -17,6 +17,7 @@ import sqlite3
 from .models import *
 import tensorflow as tf
 import random
+from .wallet_one import *
 import numpy as np
 from django.forms.models import model_to_dict
 from django.contrib.auth import login, logout, authenticate
@@ -68,7 +69,7 @@ def index(request):
     pred = model.predict(arr)[0][0]
     arr = np.append(arr, pred)
     spros = enumerate(arr)
-    data = {'user': user, 'spros':spros}
+    data = {'user': user, 'spros': spros}
     return render(request, 'base.html', data)
 
 
@@ -97,6 +98,10 @@ def register(request):
             user.last_name = form.cleaned_data['last_name']
             user.save()
             new_user = MyUser.objects.create(user=user)
+            token = get_token()
+            extern = register_user(token)
+            new_user.externalId = extern
+            new_user.bind_uuid = add_samzan(extern, token)
             new_user.email = form.cleaned_data['email']
             new_user.avatar = settings.MEDIA_ROOT + f"/load_{form.cleaned_data['username']}.png"
             new_user.obl = form.cleaned_data['obl']
@@ -258,7 +263,7 @@ def map(request):
 
     map = map._repr_html_()
 
-    context = {'map': map, 'user':get_user(request)}
+    context = {'map': map, 'user': get_user(request)}
     return render(request, 'map.html', context)
 
 
@@ -290,7 +295,7 @@ def lk(request):
     pred = model.predict(arr)[0][4]
     arr = np.append(arr, pred)
     predlozh = enumerate(arr)
-    data = {'user': get_user(request), 'products': products, 'orders': orders, 'predlozh':predlozh}
+    data = {'user': get_user(request), 'products': products, 'orders': orders, 'predlozh': predlozh}
     return render(request, 'lk.html', data)
 
 
@@ -393,7 +398,8 @@ def catalog(request, reg, who):
     region = np.array(df['Облать'])
     product = Ptoduct.objects.all()
     categories = Category.objects.all()
-    data = {'user': get_user(request), 'products': product, 'region': region, 'reg': reg, 'who': who, 'categories':categories}
+    data = {'user': get_user(request), 'products': product, 'region': region, 'reg': reg, 'who': who,
+            'categories': categories}
 
     return render(request, 'catalog.html', data)
 
@@ -419,6 +425,8 @@ def create_order(request, pk):
         form = OrderForm(request.POST)
         if form.is_valid():
             product = Ptoduct.objects.get(pk=pk)
+            token = get_token()
+            user = get_user(request)
             order = Order.objects.create(
                 product=product,
                 fio=form.cleaned_data['fio'],
@@ -427,7 +435,8 @@ def create_order(request, pk):
                 comment=form.cleaned_data['comment'],
                 status=0,
                 to_user=product.parent,
-                from_user=get_user(request)
+                from_user=user,
+                invoiceid=create_invoice(user.externalId, str(form.cleaned_data['price']))
             )
             order.save()
             orderlist = get_order_list(request)

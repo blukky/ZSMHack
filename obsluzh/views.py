@@ -76,6 +76,8 @@ def register(request):
             im = Image.open(BytesIO(form.cleaned_data['avatar'].read()))
             im.save(settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.png", 'PNG')
             user = User.objects.create_user(form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
             user.save()
             new_user = MyUser.objects.create(user=user)
             new_user.email = form.cleaned_data['email']
@@ -331,7 +333,9 @@ def start(request):
 
     
 def lk(request):
-    data = {'user': get_user(request)}
+    products = Ptoduct.objects.filter(parent=get_user(request))[:3]
+    orders = Order.objects.filter(from_user=get_user(request))[:3]
+    data = {'user': get_user(request),'products':products, 'orders':orders}
     return render(request, 'lk.html', data)
 
 ####################################

@@ -57,9 +57,15 @@
         width: 240px;
         height: 170px;
         background: #c8c8c8;
+        overflow: hidden;
         border-radius: 50px 50px 50px 50px;
+        margin: 0 10px;
         border: 0;
         box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+    }
+    #rectanglezakaz:hover {
+        box-shadow: none;
+
     }
 </style>
 {% endblock %}
@@ -79,7 +85,7 @@
             <h4 class="" style="padding-top: 2%">{{ user.user.username }}</h4>
 
             <img src="{{ user.avatar.url }}" style="border-radius: 50%; " width="250px" height="250px">
-            <h4 class="mt-4" style="">Андрей Смирнов</h4>
+            <h4 class="mt-4" style="">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
             <h4 class="" style="">{{ user.email }}</h4>
             <h4 class="" style="">{{ user.phone }}</h4>
         </div>
@@ -90,20 +96,34 @@
                 <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="{% url 'price' %}">Мои предложения</a>
                     <a href="{% url 'add product' %}"><i class="bi bi-plus-circle"></i></a>
                 </h3>
-
-                <div class="" id="rectanglezakaz" align="left">
+                {% if not products %}
+                    <h4 align="center" class="mt-5">У вас еще нет услуг!</h4>
+                {% else %}
+                <div class="row">
+                    {% for item in products %}
+                <div id="rectanglezakaz"  align="left">
+                    <a href="{% url 'product_detail' pk=item.pk %}"><img src="{{ item.photo.url }}" alt="" width="240px" height="170px"></a>
                 </div>
-
+                    {% endfor %}
+                </div>
+            {% endif %}
             </div>
         </div>
         <div class="" id="rectangleuslug" style="margin-left: 5%">
             <div class="container mt-2" align="">
                 <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="#">Мои заказы</a>
                 </h3>
-
+                {% if not orders %}
+                    <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>
+                {% else %}
+                <div class="row">
+                    {% for item in orders %}
                 <div class="" id="rectanglezakaz" align="left">
+                    <a href="{% url 'info order' pk=item.pk %}"><img src="{{ item.product.photo.url }}" alt="" width="240px" height="170px"></a>
                 </div>
-
+                    {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
 

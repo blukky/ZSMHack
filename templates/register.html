@@ -5,130 +5,130 @@
 {% block title %} Регистрация {% endblock %}
 
 {% block style %}
-    <style type="text/css">
-        label {
-            margin-left: 20px;
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.5);
-        }
+<style type="text/css">
+    label {
+        margin-left: 20px;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.5);
+    }
 
-        input, #file {
-            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
-        }
+    input, #file {
+        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+    }
 
-        select {
-            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
-        }
+    select {
+        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+    }
 
-        input[type="file"] {
-            display: none;
-        }
+    input[type="file"] {
+        display: none;
+    }
 
-        .custom-file-upload {
-            display: inline-block;
-            padding: 6px 12px;
-            cursor: pointer;
-        }
-    </style>
+    .custom-file-upload {
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+</style>
 {% endblock %}
 
 
 {% block content %}
 {% include 'nb_all.html' %}
 
-    </div>
-    <div class="" style="" align="center">
-        <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="126"></a>
-    </div>
+</div>
+<div class="" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="126"></a>
+</div>
 
-    <div align="center" class="d-grid">
-        <form class="mx-auto mt-5 fs-5" method="post" enctype="multipart/form-data"
-              style="color: white; text-align: left">
-            {% csrf_token %}
+<div align="center" class="d-grid">
+    <form class="mx-auto mt-5 fs-5" method="post" enctype="multipart/form-data"
+          style="color: white; text-align: left">
+        {% csrf_token %}
 
-            <div id="div_id_avatar" class="form-group"><label for="id_avatar" class="">
-                Аватар:
-            </label>
-                <div class="" id="file" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
-                    <label for="file-upload" class="custom-file-upload text-dark">
-                        <i class="fa fa-download"></i> Загрузить фотографию
-                    </label><input id="file-upload" type="file" name="avatar" accept="image/*"></div>
+        <div id="div_id_avatar" class="form-group"><label for="id_avatar" class="">
+            Аватар:
+        </label>
+            <div class="" id="file" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
+                <label for="file-upload" class="custom-file-upload text-dark">
+                    <i class="fa fa-download"></i> Загрузить фотографию
+                </label><input id="file-upload" type="file" name="avatar" accept="image/*"></div>
+        </div>
+        <div id="div_id_email" class="form-group mt-2"><label for="id_email" class=" requiredField">
+            Электронная почта: </label>
+            <div class=""><input type="email"
+                                 placeholder="Электронная почта"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="email" class="form-control emailinput form-control"
+                                 maxlength="255" required="" id="id_email"></div>
+        </div>
+        <div id="div_id_phone" class="form-group mt-2"><label for="id_phone" class="">
+            Номер телефона: </label>
+            <div class=""><input type="text"
+                                 placeholder="+7(999)999-99-99"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="phone" class="form-control textinput textInput form-control"
+                                 maxlength="17" id="id_phone"></div>
+        </div>
+        <div id="div_id_obl" class="form-group"><label for="id_obl" class="">
+            Ваш регион: </label>
+            <div class=""><input type="text"
+                                 placeholder="Ваш регион"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="obl" class="form-control textinput textInput form-control"
+                                 maxlength="11" id="id_obl"></div>
+        </div>
+        <div id="div_id_who" class="form-group"><label for="id_who" class=" requiredField">
+            Статус пользователя: </label>
+            <div class="">
+                <select name="who" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                        class="form-select" id="id_who">
+                    <option value="Поставщик" selected="">Поставщик</option>
+                    <option value="Производитель">Производитель</option>
+                </select>
             </div>
-            <div id="div_id_email" class="form-group mt-2"><label for="id_email" class=" requiredField">
-                Электронная почта: </label>
-                <div class=""><input type="email"
-                                     placeholder="Электронная почта"
-                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                                     name="email" class="form-control emailinput form-control"
-                                     maxlength="255" required="" id="id_email"></div>
+        </div>
+        <div id="div_id_username" class="form-group mt-2"><label for="id_username" class=" requiredField">
+            Имя пользователя: </label>
+            <div class=""><input type="text"
+                                 placeholder="Логин"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="username" class="form-control textinput textInput form-control"
+                                 required="" id="id_username"></div>
+        </div>
+        <div id="div_id_password1" class="form-group">
+            <label for="id_password1" class=" requiredField">
+                Пароль:</label>
+            <div id="alert_1" class="alert alert-danger" style="font-size: 14px" role="alert">
+                Пароли должны совпадать!
             </div>
-            <div id="div_id_phone" class="form-group mt-2"><label for="id_phone" class="">
-                Номер телефона: </label>
-                <div class=""><input type="text"
-                                     placeholder="+7(999)999-99-99"
-                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                                     name="phone" class="form-control textinput textInput form-control"
-                                     maxlength="17" id="id_phone"></div>
+            <div class=""><input type="password"
+                                 placeholder="Пароль"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="password1"
+                                 class="form-control textinput textInput form-control" required=""
+                                 id="id_password1"></div>
+        </div>
+        <div id="div_id_password2" class="form-group mt-2"><label for="id_password2" class=" requiredField">
+            Повторите пароль:</label>
+            <div id="alert_2" class="alert alert-danger" style="font-size: 14px" role="alert">
+                Пароли должны совпадать!
             </div>
-            <div id="div_id_obl" class="form-group"><label for="id_obl" class="">
-                Ваш регион: </label>
-                <div class=""><input type="text"
-                                     placeholder="Ваш регион"
-                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                                     name="obl" class="form-control textinput textInput form-control"
-                                     id="id_obl"></div>
-            </div>
-            <div id="div_id_who" class="form-group"><label for="id_who" class=" requiredField">
-                Статус пользователя: </label>
-                <div class="">
-                    <select name="who" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                            class="form-select" id="id_who">
-                        <option value="Поставщик" selected="">Поставщик</option>
-                        <option value="Производитель">Производитель</option>
-                    </select>
-                </div>
-            </div>
-            <div id="div_id_username" class="form-group mt-2"><label for="id_username" class=" requiredField">
-                Имя пользователя: </label>
-                <div class=""><input type="text"
-                                     placeholder="Логин"
-                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                                     name="username" class="form-control textinput textInput form-control"
-                                     required="" id="id_username"></div>
-            </div>
-            <div id="div_id_password1" class="form-group">
-                <label for="id_password1" class=" requiredField">
-                    Пароль:</label>
-                <div id="alert_1" class="alert alert-danger" style="font-size: 14px" role="alert">
-                    Пароли должны совпадать!
-                </div>
-                <div class=""><input type="password"
-                                     placeholder="Пароль"
-                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                                     name="password1"
-                                     class="form-control textinput textInput form-control" required=""
-                                     id="id_password1"></div>
-            </div>
-            <div id="div_id_password2" class="form-group mt-2"><label for="id_password2" class=" requiredField">
-                Повторите пароль:</label>
-                <div id="alert_2" class="alert alert-danger" style="font-size: 14px" role="alert">
-                    Пароли должны совпадать!
-                </div>
-                <div class=""><input type="password"
-                                     placeholder="Повторите пароль"
-                                     style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
-                                     name="password2"
-                                     class="form-control textinput textInput form-control" required=""
-                                     id="id_password2"></div>
-            </div>
+            <div class=""><input type="password"
+                                 placeholder="Повторите пароль"
+                                 style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"
+                                 name="password2"
+                                 class="form-control textinput textInput form-control" required=""
+                                 id="id_password2"></div>
+        </div>
 
-            <button type="submit" style="font-size: 14pt" class="btn mt-4"><img src="/static/images/butReg.png"
-                                                                                width="350" height="auto"></button>
-        </form>
-    </div>
+        <button type="submit" style="font-size: 14pt" class="btn mt-4"><img src="/static/images/butReg.png"
+                                                                            width="350" height="auto"></button>
+    </form>
+</div>
 
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'build/js/register.js' %}"></script>
+<script src="{% static 'build/js/register.js' %}"></script>
 {% endblock %}

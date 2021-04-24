@@ -74,12 +74,12 @@ def register(request):
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             im = Image.open(BytesIO(form.cleaned_data['avatar'].read()))
-            im.save(settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.jpg", 'JPEG')
+            im.save(settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.png", 'PNG')
             user = User.objects.create_user(form.cleaned_data['username'], password=form.cleaned_data['password1'])
             user.save()
             new_user = MyUser.objects.create(user=user)
             new_user.email = form.cleaned_data['email']
-            new_user.avatar = settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.jpg"
+            new_user.avatar = settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.png"
             new_user.obl = form.cleaned_data['obl']
             new_user.phone = form.cleaned_data['phone']
             new_user.who = form.cleaned_data['who']
@@ -365,12 +365,14 @@ def reform_product(request, pk):
             product.save()
             return redirect('price')
         else:
-            data = {'user': get_user(request), 'form': form}
+            categories = Category.objects.all()
+            data = {'user': get_user(request), 'categories': categories, 'form': form}
             return render(request, 'reform_product.html', data)
     else:
         product = Ptoduct.objects.get(pk=pk)
+        categories = Category.objects.all()
         form = ProductForm(initial=model_to_dict(product))
-        data = {'user': get_user(request), 'form': form}
+        data = {'user': get_user(request), 'form': form, 'categories':categories}
     return render(request, 'reform_product.html', data)
 
 
@@ -398,11 +400,13 @@ def add_product(request):
             price_list.save()
             return redirect('price')
         else:
-            data = {'user': get_user(request), 'form': form}
+            categories = Category.objects.all()
+            data = {'user': get_user(request), 'form': form, 'categories':categories}
             return render(request, 'add_product.html', data)
     else:
         form = ProductForm()
-        data = {'user': get_user(request), 'form': form}
+        categories = Category.objects.all()
+        data = {'user': get_user(request), 'form': form, 'categories':categories}
         return render(request, 'add_product.html', data)
 
 

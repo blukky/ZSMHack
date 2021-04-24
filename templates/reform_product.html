@@ -1,11 +1,76 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block title %}Изменение услуги{% endblock %}
 
+{% block style %}
+<style type="text/css">
+    label {
+        font-size: 1.25rem;
+    }
+
+    input, #file {
+        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+    }
+
+    select {
+        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+</style>
+{% endblock %}
+
 {% block content %}
-    <form method="post" enctype="multipart/form-data">
+{% include 'nb_all.html' %}
+
+</div>
+<div class="" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+</div>
+
+<form class="gap-1 col-3 mx-auto" method="post" enctype="multipart/form-data" align="center" style="color: white">
     {% csrf_token %}
-        {{ form | crispy }}
-        <button type="submit" class="btn btn-primary">Изменить</button>
-    </form>
+
+    <div id="div_id_name" class="form-group mt-3"><label for="id_name" class=" requiredField">
+        Наименование продукта </label>
+        <div class=""><input type="text" name="name" value="услуга 2" maxlength="255"
+                             class="textinput textInput form-control" required="" id="id_name" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"></div>
+    </div>
+    <div id="div_id_category" class="form-group mt-3"><label for="id_category" class=" requiredField">
+        Категория </label>
+        <div class=""><select name="category" class="select form-control" required="" id="id_category" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
+            <option value="">---------</option>
+            <option value="1" selected="">Лесные работы</option>
+
+        </select></div>
+    </div>
+    <div id="div_id_photo" class="form-group mt-3"><label for="id_photo" class=" requiredField">
+        Фотография продукта </label>
+        <div class="">
+
+            На данный момент: <a href="/media/product/%D0%BC%D0%B2%D0%B4.jpg">product/мвд.jpg</a><br>
+            Изменить:
+            <input type="file" name="photo" accept="image/*" class="clearablefileinput form-control-file" id="id_photo" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">
+        </div>
+    </div>
+    <div id="div_id_info" class="form-group mt-3"><label for="id_info" class=" requiredField">
+        Описание услуги </label>
+        <div class=""><textarea name="info" cols="40" rows="10" class="textarea form-control" required="" id="id_info" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)">bhbhhbbhhb</textarea>
+        </div>
+    </div>
+    <div id="div_id_start_price" class="form-group mt-3"><label for="id_start_price" class=" requiredField">
+        Цена на услугу </label>
+        <div class=""><input type="number" name="start_price" value="6666.00" step="0.01"
+                             class="numberinput form-control" required="" id="id_start_price" style="border-radius: 30px; height: 50px; background: rgba(255,255,255,0.69)"></div>
+    </div>
+
+    <button type="submit" class="btn mt-3 mb-3"><img src="/static/images/butChange.png"
+                                                     width="150" height="auto"></button>
+</form>
+
+
 {% endblock %}

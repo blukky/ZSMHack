@@ -1,39 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Мои услуги{% endblock %}
+{% block title %}Мои предложения{% endblock %}
 
 {% block content %}
-    {% include 'nb_all.html' %}
-    <div align="right">
-            <div class="bg-green" style="border-radius: 50%" title="Добавить услугу"><a class="p-5 " href="{% url 'add product' %}">+</a></div>
-        </div>
+{% include 'nb_all.html' %}
+
+</div>
+<div class="" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+</div>
+
+
+<div align="center">
+    {% if not products %}
+    <div><h1 class="mt-3" style="color: white">Вы еще не добавили ни одной услуги!</h1></div>
     <div align="center">
-        {% if not products %}
-            <div>Вы еще не добавили ни одной услуги!</div>
-        {% else %}
-        <div class="row">
-            {% for item in products %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                    <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top" src="{{ item.photo.url }}" alt=""></a>
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="#">{{ item.name }}</a>
-                        </h4>
-                        <h5>{{ item.start_price }}</h5>
-                        <p class="card-text"><a href="{% url 'info product' pk=item.pk %}">Подробнее..</a></p>
-                        <p class="card-text"><a href="{% url 'reform product' pk=item.pk %}">Редактировать</a></p>
-                        <p class="card-text"><a href="{% url 'remove product' pk=item.pk %}">Удалить</a></p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">{{ item.category }}</small>
-                    </div>
+        <a style="font-size: 50px" href="{% url 'add product' %}"><img src="{% static 'images/butAdd.png' %}"
+                                                                       width="200" height="auto"
+                                                                       style="padding-top: 23px"><i
+                class="bi bi-plus-circle"></i></a>
+    </div>
+    {% else %}
+    <div align="center">
+        <a style="font-size: 50px" href="{% url 'add product' %}"><img src="{% static 'images/butAdd.png' %}"
+                                                                       width="200" height="auto"
+                                                                       style="padding-top: 23px"><i
+                class="bi bi-plus-circle"></i></a>
+    </div>
+    <div class="row" align="center">
+        {% for item in products %}
+        <div class="col-lg-3 col-md-6 mb-4" style="margin-left: 6%; padding-left: -20px">
+            <div class="card h-100 "
+                 style="border-radius: 20px 20px 20px 20px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);">
+                <a href="{% url 'info product' pk=item.pk %}"><img class="card-img-top" style="margin: 2%; width: 300px"
+                                                                   src="{{ item.photo.url }}" alt=""></a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="#">{{ item.name }}</a>
+                    </h4>
+                    <h5>{{ item.start_price }}</h5>
+                    <p class="card-text"><a href="{% url 'info product' pk=item.pk %}">Подробнее..</a></p>
+                    <p class="card-text"><a href="{% url 'reform product' pk=item.pk %}">Редактировать</a></p>
+                    <p class="card-text"><a href="{% url 'remove product' pk=item.pk %}">Удалить</a></p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ item.category }}</small>
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {% endif %}
-
+        {% endfor %}
     </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}

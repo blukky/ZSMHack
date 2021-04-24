@@ -3,83 +3,110 @@
 {% block title %}Каталог{% endblock %}
 
 {% block style %}
-<style type="text/css">
-select {
+    <style type="text/css">
+        select {
+            text-align: center;
+            text-align-last: center;
+            text-align: center;
+        }
 
-    text-align-last: center;
-    text-align: center;
-}
-option{
-    color: #0f0f0f;
-}
+        option {
+            color: #0f0f0f;
+            text-align: center;
+        }
 
-.form-select {
-    padding: 0
-}
+        .form-select {
+            padding: 0
+        }
 
-#rectangle {
-        width: 1230px;
-        height: 100px;
-        background: #4e4e4e;
-        border-radius: 50px 50px 0 0;
-        border: 0;
-    }
+        #rectangle {
+            width: 90%;
+            height: 100px;
+            background: #4e4e4e;
+            border-radius: 50px 50px 0 0;
+            border: 0;
+        }
 
-</style>
+    </style>
 {% endblock %}
 
 {% block content %}
     {% include 'nb_all.html' %}
-<div class="" style="" align="center">
-    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
-</div>
-
-
-<div align="center">
-    {% csrf_token %}
-    <div class="mb-2 d-flex" id="rectangle" style="margin-left: ">
-        <div id="region" class="d-grid gap-1 col-3 mx-auto" align="center">
-            <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
-            <select id="select_region" class="form-select  fs-5 mb-5"
-                    style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
-                {% for item in region %}
-                <option value="{{ item }}" {% if item == user.obl or item == reg %}selected{% endif %}>{{ item }}</option>
-                {% endfor %}
-            </select>
-
-        </div>
-        <h5 style="color: white; padding-top: 3%">Цена</h5>
-        <select id="" class="form-select"
-                    style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
-                <option>Поставщик</option>
-                <option>Производитель</option>
-            </select>
+    <div class="" style="" align="center">
+        <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
     </div>
+
+
+    <div align="center">
+        {% csrf_token %}
+        <div class="mb-2 d-flex" id="rectangle" style="">
+            <div id="region" class="" style="width: 25%; text-align: center;" align="center">
+                <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите регион:</h5>
+                <select id="select_region" class="form-select  fs-5 mb-5"
+                        style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
+                    {% for item in region %}
+                        <option value="{{ item }}"
+                                {% if item == user.obl or item == reg %}selected{% endif %}>{{ item }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div id="" class="" style="width: 25%; text-align: center;" align="center">
+                <h5 class="mt-4" style="color: rgba(255,255,255,0.5)">Выберите категорию:</h5>
+                <select id="cat" class="form-select  fs-5 mb-5"
+                        style="background: rgba(255, 255, 255, 0); color: white; border: 0" id="">
+                    {% for item in categories %}
+                        <option value="{{ item.name }}">{{ item.name }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div style="width: 25%">
+                <h5 style="color: white; padding-top: 3%; margin-right: 10px">Цена</h5>
+                <div style="padding-top: 3%">
+                    <input id="min_price" style="border-radius: 10px;" value="0" height="50px" type="text"><span
+                        style="color: white;">-</span><input id="max_price" maxlength="5" value="99999" style="border-radius: 10px;" height="50px" type="text">
+                </div>
+            </div>
+            <select id="who" class="form-select"
+                    style="background: rgba(255, 255, 255, 0); color: white; border: 0; width: 25%" id="">
+                <option {% if who == Поставщик %}selected{% endif %}>Поставщик</option>
+                <option {% if who == Производитель %}selected{% endif %}>Производитель</option>
+            </select>
+        </div>
         {% if not products %}
             <div>В вашем регионе еще не предлагали ни одной услуги!</div>
         {% else %}
             <div class="row" align="center">
                 {% for item in products %}
-                <div class="col-lg-3 col-md-6 mb-4" style="margin-left: 6%; padding-left: -20px">
-                        <div class="card h-100" style="border-radius: 20px 20px 20px 20px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);">
-                            <a href="{% url 'info product' pk=item.id %}"><img class="card-img-top" style="margin: 2%; width: 300px; height: 300px" src="{{ item.photo.url }}" alt=""></a>
-                            <div class="card-body">
+                    <div data-value="{{ item.parent.who }}" data-dismiss="{{ item.start_price }}" data-parent="{{ item.category }}" data-action="{{ item.parent.obl }}" class="col-lg-3 col-md-6 mb-4 prod" style="margin-left: 6%; padding-left: -20px;">
+                        <div class="card h-100"
+                             style="border-radius: 20px 20px 20px 20px; box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);">
+                            <a href="{% url 'info product' pk=item.id %}"><img class="card-img-top"
+                                                                               style="margin: 2%; width: 300px; height: 300px"
+                                                                               src="{{ item.photo.url }}" alt=""></a>
+                            <div class="card-body"  >
                                 <h4 class="card-title">
                                     <a href="#">{{ item.name }}</a>
                                 </h4>
                                 <h5>{{ item.start_price }}</h5>
                                 <p class="card-text"><a href="{% url 'product_detail' pk=item.id %}">Подробнее..</a></p>
-                                <p class="card-text"><a href="{% url 'create order' pk=item.id %}">Заказать услугу</a></p>
+                                <p class="card-text"><a href="{% url 'create order' pk=item.id %}">Заказать услугу</a>
+                                </p>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">{{ item.category }}</small>
+                                <small id="category" class="text-muted">{{ item.category }}</small>
                             </div>
                         </div>
 
-                </div>
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
 
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'build/js/catalog.js' %}"></script>
 {% endblock %}

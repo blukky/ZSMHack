@@ -74,19 +74,20 @@ def register(request):
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             im = Image.open(BytesIO(form.cleaned_data['avatar'].read()))
-            im.save(settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.png", 'PNG')
+            im.save(settings.MEDIA_ROOT + f"/load_{form.cleaned_data['username']}.png", 'PNG')
             user = User.objects.create_user(form.cleaned_data['username'], password=form.cleaned_data['password1'])
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
             user.save()
             new_user = MyUser.objects.create(user=user)
             new_user.email = form.cleaned_data['email']
-            new_user.avatar = settings.MEDIA_ROOT+f"/load_{form.cleaned_data['username']}.png"
+            new_user.avatar = settings.MEDIA_ROOT + f"/load_{form.cleaned_data['username']}.png"
             new_user.obl = form.cleaned_data['obl']
             new_user.phone = form.cleaned_data['phone']
             new_user.who = form.cleaned_data['who']
             new_user.save()
-            user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            user = authenticate(request, username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password1'])
             if user is not None:
                 login(request, user)
             return redirect('main')
@@ -95,7 +96,7 @@ def register(request):
             return render(request, 'register.html', data)
     else:
         form = UserRegisterForm()
-        data = {'form':form, 'user':get_user(request)}
+        data = {'form': form, 'user': get_user(request)}
         return render(request, 'register.html', data)
 
 def logout_user(request):
@@ -328,14 +329,14 @@ def start(request):
     region = np.array(df['Облать'])
     df = pd.read_csv('Поселок.csv')
     pos = np.array(df['Поселок'])
-    data = {'region': region, 'user':get_user(request), 'pos':pos}
+    data = {'region': region, 'user': get_user(request), 'pos': pos}
     return render(request, 'start.html', data)
 
-    
+
 def lk(request):
     products = Ptoduct.objects.filter(parent=get_user(request))[:3]
     orders = Order.objects.filter(from_user=get_user(request))[:3]
-    data = {'user': get_user(request),'products':products, 'orders':orders}
+    data = {'user': get_user(request), 'products': products, 'orders': orders}
     return render(request, 'lk.html', data)
 
 ####################################
@@ -371,13 +372,13 @@ def reform_product(request, pk):
         else:
             product = Ptoduct.objects.get(pk=pk)
             categories = Category.objects.all()
-            data = {'user': get_user(request), 'categories': categories, 'form': form, 'product':product}
+            data = {'user': get_user(request), 'categories': categories, 'form': form, 'product': product}
             return render(request, 'reform_product.html', data)
     else:
         product = Ptoduct.objects.get(pk=pk)
         categories = Category.objects.all()
         form = ProductForm(initial=model_to_dict(product))
-        data = {'user': get_user(request), 'form': form, 'categories':categories, 'product':product}
+        data = {'user': get_user(request), 'form': form, 'categories': categories, 'product': product}
     return render(request, 'reform_product.html', data)
 
 
@@ -391,14 +392,14 @@ def add_product(request):
             im = Image.open(BytesIO(form.cleaned_data['photo'].read()))
             im.save(path, 'JPEG')
             poduct = Ptoduct.objects.create(parent=user,
-                                           category=form.cleaned_data['category'],
-                                           name=form.cleaned_data['name'],
-                                           photo=path,
-                                           info=form.cleaned_data['info'],
-                                           reg=user.obl,
-                                           status='Производитель' if user.who =='Поставщик' else 'Поставщик',
-                                           start_price=form.cleaned_data['start_price']
-                                   )
+                                            category=form.cleaned_data['category'],
+                                            name=form.cleaned_data['name'],
+                                            photo=path,
+                                            info=form.cleaned_data['info'],
+                                            reg=user.obl,
+                                            status='Производитель' if user.who == 'Поставщик' else 'Поставщик',
+                                            start_price=form.cleaned_data['start_price']
+                                            )
             poduct.save()
             price_list = get_price(request)
             price_list.products.add(poduct)
@@ -406,19 +407,19 @@ def add_product(request):
             return redirect('price')
         else:
             categories = Category.objects.all()
-            data = {'user': get_user(request), 'form': form, 'categories':categories}
+            data = {'user': get_user(request), 'form': form, 'categories': categories}
             return render(request, 'add_product.html', data)
     else:
         form = ProductForm()
         categories = Category.objects.all()
-        data = {'user': get_user(request), 'form': form, 'categories':categories}
+        data = {'user': get_user(request), 'form': form, 'categories': categories}
         return render(request, 'add_product.html', data)
 
 
 def price(request):
     price_list = get_price(request)
     product = price_list.products.all()
-    data = {'user':get_user(request), 'products':product}
+    data = {'user': get_user(request), 'products': product}
     return render(request, 'price-list.html', data)
 
 def price_info(request, pk):
@@ -432,8 +433,9 @@ def catalog(request, reg, who):
     reg = reg.replace('_', " ")
     df = pd.read_csv('regions.csv')
     region = np.array(df['Облать'])
-    product = Ptoduct.objects.filter(status=who, reg=reg)
-    data = {'user': get_user(request), 'products': product,'region': region, 'reg':reg}
+    product = Ptoduct.objects.all()
+    categories = Category.objects.all()
+    data = {'user': get_user(request), 'products': product, 'region': region, 'reg': reg, 'who': who, 'categories':categories}
 
     return render(request, 'catalog.html', data)
 
@@ -444,16 +446,18 @@ def other_lk(request, pk):
     count_order_to = len(Order.objects.filter(to_user=other_user))
     count_order_from = len(Order.objects.filter(from_user=other_user))
     count = [count_order_to, count_order_from]
-    data = {'user': get_user(request),'other_user': other_user, 'products':products, 'count': count}
+    data = {'user': get_user(request), 'other_user': other_user, 'products': products, 'count': count}
     return render(request, 'other_lk.html', data)
+
 
 def info_product(request, pk):
     product = Ptoduct.objects.get(pk=pk)
     data = {'user': get_user(request), 'product': product}
     return render(request, 'info_product.html', data)
 
+
 def create_order(request, pk):
-    if request.method =='POST':
+    if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             product = Ptoduct.objects.get(pk=pk)
@@ -477,34 +481,26 @@ def create_order(request, pk):
             return render(request, 'create_order.html', data)
     else:
         form = OrderForm()
-        data = {'user':get_user(request), 'form':form}
+        data = {'user': get_user(request), 'form': form}
         return render(request, 'create_order.html', data)
 
+
 def my_order(request):
-    orders = list()
-    orders.append(Order.objects.filter(from_user=get_user(request)))
-    orders.append(Order.objects.filter(to_user=get_user(request)))
-    data = {'orders': orders, 'user':get_user(request), 'title':"Мои заказы"}
+    orders = Order.objects.filter(from_user=get_user(request))
+    data = {'orders': orders, 'user': get_user(request), 'title': "Мои заказы"}
     return render(request, 'my_order.html', data)
+
 
 def my_predlozh(request):
     orders = Order.objects.filter(to_user=get_user(request))
-    data = {'orders': orders, 'user':get_user(request), 'title':"Мои предложения"}
+    data = {'orders': orders, 'user': get_user(request), 'title': "Мои предложения"}
     return render(request, 'my_order.html', data)
+
 
 def info_order(request, pk):
     order = Order.objects.get(pk=pk)
-    data = {'user':get_user(request), 'order': order}
+    data = {'user': get_user(request), 'order': order}
     return render(request, 'info_order.html', data)
-
-
-
-
-
-
-
-
-
 
 
 ######################## AJAX
@@ -514,7 +510,7 @@ def select_region(request):
     if request.method == 'POST':
         data = dict()
         df = pd.read_csv('Поселок.csv')
-        pos = np.array(df[df['Область']==request.POST['region']]['Поселок'])
+        pos = np.array(df[df['Область'] == request.POST['region']]['Поселок'])
         for i in range(len(pos)):
             data[i] = pos[i]
         return JsonResponse(data)

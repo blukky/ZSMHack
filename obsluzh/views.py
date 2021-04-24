@@ -369,14 +369,15 @@ def reform_product(request, pk):
             product.save()
             return redirect('price')
         else:
+            product = Ptoduct.objects.get(pk=pk)
             categories = Category.objects.all()
-            data = {'user': get_user(request), 'categories': categories, 'form': form}
+            data = {'user': get_user(request), 'categories': categories, 'form': form, 'product':product}
             return render(request, 'reform_product.html', data)
     else:
         product = Ptoduct.objects.get(pk=pk)
         categories = Category.objects.all()
         form = ProductForm(initial=model_to_dict(product))
-        data = {'user': get_user(request), 'form': form, 'categories':categories}
+        data = {'user': get_user(request), 'form': form, 'categories':categories, 'product':product}
     return render(request, 'reform_product.html', data)
 
 

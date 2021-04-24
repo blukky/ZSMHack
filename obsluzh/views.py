@@ -15,6 +15,7 @@ from folium.plugins import MarkerCluster
 from folium import IFrame
 import sqlite3
 from .models import *
+import tensorflow as tf
 import random
 import numpy as np
 from django.forms.models import model_to_dict
@@ -57,7 +58,17 @@ def get_order_list(request):
 
 def index(request):
     user = get_user(request)
-    data = {'user': user}
+    df = pd.read_excel('Спрос.xlsx')
+    df = np.array(df['Объём'])
+    arr = df[-10:]
+    print(arr)
+    model = tf.keras.models.load_model('спрос_gru.h5')
+    arr = np.expand_dims(arr, axis=0)
+    arr = np.expand_dims(arr, axis=2)
+    pred = model.predict(arr)[0][0]
+    arr = np.append(arr, pred)
+    spros = enumerate(arr)
+    data = {'user': user, 'spros':spros}
     return render(request, 'base.html', data)
 
 
@@ -67,7 +78,7 @@ def login_user(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('main')
+            return redirect('home')
         else:
             return render(request, "login.html", {'form': form, 'user': get_user(request)})
     else:
@@ -96,7 +107,7 @@ def register(request):
                                 password=form.cleaned_data['password1'])
             if user is not None:
                 login(request, user)
-            return redirect('main')
+            return redirect('home')
         else:
             data = {'form': form, 'user': get_user(request)}
             return render(request, 'register.html', data)
@@ -270,7 +281,16 @@ def start(request):
 def lk(request):
     products = Ptoduct.objects.filter(parent=get_user(request))[:3]
     orders = Order.objects.filter(from_user=get_user(request))[:3]
-    data = {'user': get_user(request), 'products': products, 'orders': orders}
+    df = pd.read_excel('Предложение.xlsx')
+    df = np.array(df['Объём'])
+    arr = df[-10:]
+    model = tf.keras.models.load_model('предложение_gru.h5')
+    arr = np.expand_dims(arr, axis=0)
+    arr = np.expand_dims(arr, axis=2)
+    pred = model.predict(arr)[0][4]
+    arr = np.append(arr, pred)
+    predlozh = enumerate(arr)
+    data = {'user': get_user(request), 'products': products, 'orders': orders, 'predlozh':predlozh}
     return render(request, 'lk.html', data)
 
 

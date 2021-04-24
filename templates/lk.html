@@ -5,146 +5,155 @@
 {% block title %} Личный кабинет {% endblock %}
 
 {% block style %}
-<style type="text/css">
-    label {
-        margin-left: 20px;
-        font-size: 18px;
-        color: rgba(255, 255, 255, 0.5);
-    }
+    <style type="text/css">
+        label {
+            margin-left: 20px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.5);
+        }
 
-    input {
-        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
-    }
+        input {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
 
-    select {
-        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
-    }
+        select {
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
 
-    input[type="file"] {
-        display: none;
-    }
+        input[type="file"] {
+            display: none;
+        }
 
-    .custom-file-upload {
-        display: inline-block;
-        padding: 6px 12px;
-        cursor: pointer;
-    }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
 
-    #rectangle {
-        width: 400px;
-        height: 500px;
-        background: #ffffff;
-        border-radius: 50px 50px 50px 50px;
-        border: 0;
-    }
+        #rectangle {
+            width: 400px;
+            height: 500px;
+            background: #ffffff;
+            border-radius: 50px 50px 50px 50px;
+            border: 0;
+        }
 
-    #rectangleuslug {
-        width: 800px;
-        height: 240px;
-        background: #ffffff;
-        border-radius: 50px 50px 50px 50px;
-        border: 0;
-    }
+        #rectangleuslug {
+            width: 800px;
+            height: 240px;
+            background: #ffffff;
+            border-radius: 50px 50px 50px 50px;
+            border: 0;
+        }
 
-    #rectanglegraph {
-        width: 1240px;
-        height: 320px;
-        background: #ffffff;
-        border-radius: 50px 50px 50px 50px;
-        border: 0;
-    }
-    #rectanglezakaz {
-        width: 240px;
-        height: 170px;
-        background: #c8c8c8;
-        overflow: hidden;
-        border-radius: 50px 50px 50px 50px;
-        margin: 0 10px;
-        border: 0;
-        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
-    }
-    #rectanglezakaz:hover {
-        box-shadow: none;
+        #rectanglegraph {
+            width: 1240px;
+            height: 320px;
+            background: #ffffff;
+            border-radius: 50px 50px 50px 50px;
+            border: 0;
+        }
 
-    }
-</style>
+        #rectanglezakaz {
+            width: 240px;
+            height: 170px;
+            background: #c8c8c8;
+            overflow: hidden;
+            border-radius: 50px 50px 50px 50px;
+            margin: 0 10px;
+            border: 0;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.16);
+        }
+
+        #rectanglezakaz:hover {
+            box-shadow: none;
+
+        }
+    </style>
 {% endblock %}
 
 
 {% block content %}
-{% include 'nb_all.html' %}
+    {% include 'nb_all.html' %}
 
-</div>
-<div class="" style="" align="center">
-    <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
-</div>
+    </div>
+    <div class="" style="" align="center">
+        <a href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375" height="auto"></a>
+    </div>
 
-<div class="d-flex" >
-    <div class="" id="rectangle" style="margin-left: 5%">
+    <div class="d-flex">
+        <div class="" id="rectangle" style="margin-left: 5%">
+            <div class="container mt-2" align="center">
+                <h4 class="" style="padding-top: 2%">{{ user.user.username }}</h4>
+
+                <img src="{{ user.avatar.url }}" style="border-radius: 50%; " width="250px" height="250px">
+                <h4 class="mt-4" style="">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+                <h4 class="" style="">{{ user.email }}</h4>
+                <h4 class="" style="">{{ user.phone }}</h4>
+            </div>
+        </div>
+        <div>
+            <div class="" id="rectangleuslug" style="margin-left: 5%">
+                <div class="container mt-2" align="">
+                    <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="{% url 'price' %}">Мои
+                        предложения</a>
+                        <a href="{% url 'add product' %}"><i class="bi bi-plus-circle"></i></a>
+                    </h3>
+                    {% if not products %}
+                        <h4 align="center" class="mt-5">У вас еще нет услуг!</h4>
+                    {% else %}
+                        <div class="row">
+                            {% for item in products %}
+                                <div id="rectanglezakaz" align="left">
+                                    <a href="{% url 'product_detail' pk=item.pk %}"><img src="{{ item.photo.url }}"
+                                                                                         alt="" width="240px"
+                                                                                         height="170px"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="" id="rectangleuslug" style="margin-left: 5%">
+                <div class="container mt-2" align="">
+                    <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="#">Мои заказы</a>
+                    </h3>
+                    {% if not orders %}
+                        <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>
+                    {% else %}
+                        <div class="row">
+                            {% for item in orders %}
+                                <div class="" id="rectanglezakaz" align="left">
+                                    <a href="{% url 'info order' pk=item.pk %}"><img src="{{ item.product.photo.url }}"
+                                                                                     alt="" width="240px"
+                                                                                     height="170px"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="" id="rectanglegraph" style="margin-left: 5%; margin-bottom: 5%">
         <div class="container mt-2" align="center">
-            <h4 class="" style="padding-top: 2%">{{ user.user.username }}</h4>
-
-            <img src="{{ user.avatar.url }}" style="border-radius: 50%; " width="250px" height="250px">
-            <h4 class="mt-4" style="">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
-            <h4 class="" style="">{{ user.email }}</h4>
-            <h4 class="" style="">{{ user.phone }}</h4>
-        </div>
-    </div>
-    <div>
-        <div class="" id="rectangleuslug" style="margin-left: 5%">
-            <div class="container mt-2" align="">
-                <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="{% url 'price' %}">Мои предложения</a>
-                    <a href="{% url 'add product' %}"><i class="bi bi-plus-circle"></i></a>
-                </h3>
-                {% if not products %}
-                    <h4 align="center" class="mt-5">У вас еще нет услуг!</h4>
-                {% else %}
-                <div class="row">
-                    {% for item in products %}
-                <div id="rectanglezakaz"  align="left">
-                    <a href="{% url 'product_detail' pk=item.pk %}"><img src="{{ item.photo.url }}" alt="" width="240px" height="170px"></a>
-                </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <div class="chart-container" style="position: relative; height:300px; width:600px">
+                <canvas id="myChart"></canvas>
             </div>
+            {% for item in predlozh %}
+                <div style="display: none" id="{{ item.0 }}" class="cart">{{ item.1 }}</div>
+            {% endfor %}
         </div>
-        <div class="" id="rectangleuslug" style="margin-left: 5%">
-            <div class="container mt-2" align="">
-                <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="#">Мои заказы</a>
-                </h3>
-                {% if not orders %}
-                    <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>
-                {% else %}
-                <div class="row">
-                    {% for item in orders %}
-                <div class="" id="rectanglezakaz" align="left">
-                    <a href="{% url 'info order' pk=item.pk %}"><img src="{{ item.product.photo.url }}" alt="" width="240px" height="170px"></a>
-                </div>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-
     </div>
-
-</div>
-<div class="" id="rectanglegraph" style="margin-left: 5%; margin-bottom: 5%">
-    <div class="container mt-2" align="center">
-        <div class="chart-container" style="position: relative; height:300px; width:600px">
-            <canvas id="myChart"></canvas>
-        </div>
-
-    </div>
-</div>
 
 
 {% endblock %}
 
 {% block script %}
 
-<script>
+    <script>
 
-</script>
+    </script>
 {% endblock %}

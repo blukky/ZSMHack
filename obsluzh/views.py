@@ -116,7 +116,7 @@ def map(request):
     #######################################################################################################
 
     import json
-    with open("Sostav_SMZ.json", "r") as read_file:
+    with open("Sostav_SMZ.json", "r", encoding="utf8") as read_file:
         data = json.load(read_file)
 
     mass_x = list()
@@ -238,7 +238,6 @@ def map(request):
         popup = folium.Popup(iframe, parse_html=True)
 
         folium.Marker(location=[mass_x[i], mass_y[i]],
-
                       popup=popup,
                       tooltip=tooltip,
                       icon=folium.Icon(color="darkred", icon="glyphicon glyphicon-home"),  # color="blue"
@@ -248,7 +247,7 @@ def map(request):
 
     map = map._repr_html_()
 
-    context = {'map': map}
+    context = {'map': map, 'user':get_user(request)}
     return render(request, 'map.html', context)
 
 

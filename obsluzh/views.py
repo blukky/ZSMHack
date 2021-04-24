@@ -481,7 +481,9 @@ def create_order(request, pk):
         return render(request, 'create_order.html', data)
 
 def my_order(request):
-    orders = Order.objects.filter(from_user=get_user(request))
+    orders = list()
+    orders.append(Order.objects.filter(from_user=get_user(request)))
+    orders.append(Order.objects.filter(to_user=get_user(request)))
     data = {'orders': orders, 'user':get_user(request), 'title':"Мои заказы"}
     return render(request, 'my_order.html', data)
 

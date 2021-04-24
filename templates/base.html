@@ -80,7 +80,7 @@
                 <a class="" href="#" style="margin-right: 8%"><h5>Помощь</h5></a>
             </div>
 
-            <a style="margin-right: 11%" href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375"
+            <a style="margin-right: 9%" href="{% url 'main' %}"><img src="{% static 'images/villem.png' %}" width="375"
                                                                       height="auto"></a>
 
             {% if request.user.is_authenticated %}
@@ -102,7 +102,16 @@
         <video width="100%" height="auto" preload="auto" autoplay="true" loop="true" muted="muted">
             <source src="{% static 'images/video.mp4' %}" type="video/mp4">
         </video>
+
     </div>
+
+<div class="head_info" align="left" style="margin: 15% 0 0 5%; color: white">
+    <div class="d-flex">
+        <h1>Villem </h1>
+        <h4 style="padding: 1% 0 0 1%"> - cервис для самозанятых</h4>
+    </div>
+    <h4 class="" style="width: 500px; padding-top: 15px">Проект Villem это сервис для быстрого и удобного взаимодействие между самозанятыми людьми на сельских территориях, для проведения безопасных сделок, агрегации надежных и проверенных поставщиков и производителей. Наша цель дать возможность каждому человеку, который хочешь продвигать свои идеи и товар в отдаленных от города местах, найти себе подходящего по всем параметрам делового партнера.</h4>
+</div>
 
     <div align="center" class="">
         <a class="head_info" href="

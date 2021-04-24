@@ -115,42 +115,9 @@ def logout_user(request):
 def map(request):
     #######################################################################################################
 
-    conn = sqlite3.connect("SMZ.db")
-    cursor = conn.cursor()
-
-    sql = 'select "Широта" from "Состав самозанятых"'
-    cursor.execute(sql)
-    x = cursor.fetchall()
-
-    sql = 'select "Долгота" from "Состав самозанятых"'
-    cursor.execute(sql)
-    y = cursor.fetchall()
-
-    sql = 'select "Код" from "Состав самозанятых"'
-    cursor.execute(sql)
-    kod = cursor.fetchall()
-
-    sql = 'select "Тип " from "Состав самозанятых"'
-    cursor.execute(sql)
-    name = cursor.fetchall()
-
-    sql = 'select "Адрес" from "Состав самозанятых"'
-    cursor.execute(sql)
-    address = cursor.fetchall()
-
-    sql = 'select "Руководитель" from "Состав самозанятых"'
-    cursor.execute(sql)
-    ruk = cursor.fetchall()
-
-    sql = 'select "Наименование региона" from "Состав самозанятых"'
-    cursor.execute(sql)
-    region = cursor.fetchall()
-
-    sql = 'select "Описание ОКВЭД" from "Состав самозанятых"'
-    cursor.execute(sql)
-    okved = cursor.fetchall()
-
-    # 'SELECT "Код","Тип ","Адрес","Руководитель","Наименование региона","Описание ОКВЭД"  FROM "Состав самозанятых" WHERE "Широта"="54,45277778"'
+    import json
+    with open("Sostav_SMZ.json", "r") as read_file:
+        data = json.load(read_file)
 
     mass_x = list()
     mass_y = list()
@@ -162,23 +129,20 @@ def map(request):
     mass_region = list()
     mass_okved = list()
 
-    for i in range(len(x)):
-
+    for i in range(len(data)):
         try:
-            mass_x.append(float(x[i][0].replace(",", ".")))
-            mass_y.append(float(y[i][0].replace(",", ".")))
-            mass_kod.append(str(kod[i][0]))
-            mass_name.append(str(name[i][0]))
-            mass_address.append(str(address[i][0]))
-            mass_ruk.append(str(ruk[i][0]))
-            mass_region.append(str(region[i][0]))
-            mass_okved.append(str(okved[i][0]))
+            mass_x.append(float(data[i]["Широта"].replace(",", ".")))
+            mass_y.append(float(data[i]["Долгота"].replace(",", ".")))
 
+            mass_kod.append(str(data[i]["Код"]))
+            mass_name.append(str(data[i]["Тип "]))
+            mass_address.append(str(data[i]["Адрес"]))
+            mass_ruk.append(str(data[i]["Руководитель"]))
+            mass_region.append(str(data[i]["Наименование региона"]))
+            mass_okved.append(str(data[i]["Описание ОКВЭД"]))
 
         except:
             pass
-
-    # print(mass_address)
 
     def color_change(elev):
         if (elev < 2):
@@ -198,27 +162,18 @@ def map(request):
     # def kachestvo():
     #     return np.random.choice(['Низкое', 'Среднее', 'Высокое'], 1)[0]
 
-    # df = pd.DataFrame(columns=['a','b','c','d','e','f'], index=['x','y'])
-    # df.loc['x'] = pd.Series({'a':'Наименование', 'b':'Адрес', 'c':'Руководитель', 'd':'Наименование региона', 'e':'ОКВЭД', 'f':'Описание ОКВЭД'})
-    # df.loc['y'] = pd.Series({'a':mass_name, 'b':mass_ruk, 'c':mass_address, 'd':3, 'e':1, 'f':1})
-
-    # 'SELECT "Код","Тип ","Адрес","Руководитель","Наименование региона","Описание ОКВЭД"  FROM "Состав самозанятых" WHERE "Широта"="54,45277778"'
-
-    df = {'Код': [mass_kod], 'Наименование': [mass_name], 'Адрес': [mass_address], 'Руководитель': [mass_ruk],
-          'Наименование региона': [mass_region], 'Описание ОКВЭД': [mass_okved]}
-    df = pd.DataFrame.from_dict(df)
-
-    print(df)
-
-    df.to_html()
-
     import branca
 
     def fancy_html(row):
-        # i = row
-        # mass_name=df['Наименование'].iloc[i]
-        # print("########################")
-        # print(mass_name)
+        i = row
+        # Date = df['Date'].iloc[i]
+
+        # mass_kod[i]
+        # mass_name[i]
+        # mass_address[i]
+        # mass_ruk[i]
+        # mass_region[i]
+        # mass_okved[i]
 
         html = """
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -227,48 +182,48 @@ def map(request):
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Стили</title>
         <style type="text/css">
-        table {
+        table {{
             font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             text-align: center;
             border-collapse: collapse;
             border-spacing: 5px;
             background: #E1E3E0;
             border-radius: 20px;
-            }
-            th {
+            }}
+            th {{
             font-size: 22px;
             font-weight: 300;
             padding: 12px 10px;
             border-bottom: 2px solid #F56433;
             color: #F56433;
-            }
-            tbody tr:nth-child(2) {
+            }}
+            tbody tr:nth-child(2) {{
             border-bottom: 2px solid #F56433;
-            }
-            td {
+            }}
+            td {{
             padding: 10px;
             color: #8D8173;
-            }
+            }}
         </style>
         </head>
         <body>
             <table>
                 <tr><th colspan="6">Подробнее:</th></tr>
                 <tr>
+                <td>Поставщик</td>
                 <td>Наименование</td>
                 <td>Адрес</td>
                 <td>Руководитель</td>
                 <td>Наименование региона</td>
-                <td>ОКВЭД</td>
                 <td>Описание ОКВЭД</td>
                 </tr>
                 <tr>
-                <td>ООО "СВ ГЛАСС ИНДАСТРИ"</td>
-                <td>601389, Владимирская обл, поселок Им Воровского, район Судогодский, улица Воровского, 10</td>
-                <td>Власов Владимир Геннадьевич</td>
-                <td>Владимирская область</td>
-                <td>23,1</td>
-                <td>Производство стекла и изделий из стекла</td>
+                <td>{}</td>""".format(mass_kod[i]) + """
+                <td>{}</td>""".format(mass_name[i]) + """
+                <td>{}</td>""".format(mass_address[i]) + """
+                <td>{}</td>""".format(mass_ruk[i]) + """
+                <td>{}</td>""".format(mass_region[i]) + """
+                <td>{}</td>""".format(mass_okved[i]) + """
                 </tr>
             </table>
         </body>
@@ -276,41 +231,15 @@ def map(request):
         """
         return html
 
-    #     popup = """
-    #                 <div align="center">
-    #                     <br>
-    #                     <iframe width="600" height="400" frameborder="0" scrolling="no"
-    #                         {{ html|safe }}
-    #                     </iframe></div>
-    # """
-
-    # <iframe src="https://www.youtube.com/embed/hvoD7ehZPcM?autoplay=1&amp;autohide=1" frameborder="0" allowfullscreen="" style="width="800" height="400""></iframe>
-
-    #     popup = '\
-    #                 <div align="center"> \
-    #                     Подробная информация: <br>\
-    #                     <iframe width="800" height="400" frameborder="0" scrolling="no" \
-    #                         src="//plotly.com/~wqsfedvf/1.embed"> \
-    #                     </iframe></div> \
-    # '
-    # iframe = branca.element.IFrame(html=html,width=800,height=250)
-
     for i in range(len(mass_name)):
         html = fancy_html(i)
 
-        iframe = branca.element.IFrame(html=html, width=800, height=250)
+        iframe = branca.element.IFrame(html=html, width=1000, height=250)
         popup = folium.Popup(iframe, parse_html=True)
 
         folium.Marker(location=[mass_x[i], mass_y[i]],
 
                       popup=popup,
-
-                      # popup=f"Наименование: {mass_name[i]}\n\n \
-                      #         Руководитель: {mass_ruk[i]}\n\n \
-                      #         Адрес: {mass_address[i]}\n\n \
-
-                      #             ",
-
                       tooltip=tooltip,
                       icon=folium.Icon(color="darkred", icon="glyphicon glyphicon-home"),  # color="blue"
                       ).add_to(marker_cluster)
@@ -320,7 +249,6 @@ def map(request):
     map = map._repr_html_()
 
     context = {'map': map}
-    conn.close()
     return render(request, 'map.html', context)
 
 

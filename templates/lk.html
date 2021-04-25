@@ -117,9 +117,21 @@
                     <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="#">Мои заказы</a>
                     </h3>
                     {% if not orders %}
-                        <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>
+                    <div class="row">
+                            <div class="" id="rectanglezakaz" align="left">
+                                    <a href=""><img src="{% static '../media/product/лес.jpeg' %}"
+                                                                                     alt="" width="240px"
+                                                                                     height="170px"></a>
+                                </div>
+                    </div>
+<!--                        <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>-->
                     {% else %}
                         <div class="row">
+                            <div class="" id="rectanglezakaz" align="left">
+                                    <a href=""><img src="{% static 'media/product/лес.jpeg' %}"
+                                                                                     alt="" width="240px"
+                                                                                     height="170px"></a>
+                                </div>
                             {% for item in orders %}
                                 <div class="" id="rectanglezakaz" align="left">
                                     <a href="{% url 'info order' pk=item.pk %}"><img src="{{ item.product.photo.url }}"

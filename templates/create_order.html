@@ -63,27 +63,32 @@
                                     style="border-radius: 30px; background: rgba(255,255,255,0.69)"></textarea>
             </div>
         </div>
-        <div class="btn btn-primary" id="card">Выбрать карту для списания</div>
-        <iframe width="500px" height="500px"
-                src="https://api.dev.walletone.com/p2p-iframe/KgX5SOAwqPgiGnjKR0TGKTyBEGp5E8baCpovOP6bgkXQhfH3kdSQ9P"
-                frameborder="0">
-        </iframe>
+<!--        <div class="btn btn-primary" id="card">Выбрать карту для списания</div>-->
 
-        <button type="submit" class="btn mt-3 mb-3"><img src="/static/images/butCreate.png"
-                                                         width="150" height="auto"></button>
+<!--        <iframe width="500px" height="500px"-->
+<!--                src="https://api.dev.walletone.com/p2p-iframe/KgX5SOAwqPgiGnjKR0TGKTyBEGp5E8baCpovOP6bgkXQhfH3kdSQ9P"-->
+<!--                frameborder="0">-->
+<!--        </iframe>-->
+
+
+<!--        <button type="submit" class="btn mt-3 mb-3"><img src="/static/images/butCreate.png"-->
+<!--                                                         width="150" height="auto"></button>-->
 
     </form>
+<div class="mt-3 mb-3" style="" align="center">
+    <a href="{% url 'main' %}"><img src="{% static 'images/wal.png' %}" width="300" height="auto"></a>
+</div>
 
-     <form class="mt-3" align="center" method="post" action="https://wl.walletone.com/checkout/checkout/Index">
-                <input name="WMI_MERCHANT_ID" value="123456789777" style="display: none">
-                <input name="WMI_PAYMENT_AMOUNT" value="100.00" style="display: none">
-                <input name="WMI_CURRENCY_ID" value="643" style="display: none">
-                <input name="WMI_DESCRIPTION" value="Оплата демонстрационного заказа" style="display: none">
-                <input name="WMI_SUCCESS_URL" value="http://127.0.0.1:8000/main" style="display: none">
-                <input name="WMI_FAIL_URL" value="http://127.0.0.1:8000/main" style="display: none">
-         <button type="submit" class="btn"><img src="/static/images/butCreate.png" width="150" height="auto"></button>
-<!--                <input type="submit">-->
-     </form>
+<!--     <form class="mt-3" align="center" method="post" action="https://wl.walletone.com/checkout/checkout/Index">-->
+<!--                <input name="WMI_MERCHANT_ID" value="123456789777" style="display: none">-->
+<!--                <input name="WMI_PAYMENT_AMOUNT" value="100.00" style="display: none">-->
+<!--                <input name="WMI_CURRENCY_ID" value="643" style="display: none">-->
+<!--                <input name="WMI_DESCRIPTION" value="Оплата демонстрационного заказа" style="display: none">-->
+<!--                <input name="WMI_SUCCESS_URL" value="http://127.0.0.1:8000/main" style="display: none">-->
+<!--                <input name="WMI_FAIL_URL" value="http://127.0.0.1:8000/main" style="display: none">-->
+<!--         <button type="submit" class="btn"><img src="/static/images/butCreate.png" width="150" height="auto"></button>-->
+<!--&lt;!&ndash;                <input type="submit">&ndash;&gt;-->
+<!--     </form>-->
 
 
 {% endblock %}

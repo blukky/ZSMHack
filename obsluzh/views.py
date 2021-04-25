@@ -93,9 +93,9 @@ def register(request):
             user.save()
             new_user = MyUser.objects.create(user=user)
             token = get_token()
-            extern = register_user(token)
-            new_user.externalId = extern
-            new_user.bind_uuid = add_samzan(extern, token)
+            # extern = register_user(token)
+            new_user.externalId = 'token'
+            new_user.bind_uuid = 'add_samzan(extern, token)'
             new_user.email = form.cleaned_data['email']
             new_user.avatar = settings.MEDIA_ROOT + f"/load_{form.cleaned_data['username']}.png"
             new_user.obl = form.cleaned_data['obl']
@@ -138,6 +138,8 @@ def map(request):
     mass_region = list()
     mass_okved = list()
 
+    mass_viruchka = list()
+
     for i in range(len(data)):
         try:
             mass_x.append(float(data[i]["Широта"].replace(",", ".")))
@@ -149,6 +151,8 @@ def map(request):
             mass_ruk.append(str(data[i]["Руководитель"]))
             mass_region.append(str(data[i]["Наименование региона"]))
             mass_okved.append(str(data[i]["Описание ОКВЭД"]))
+
+            mass_viruchka.append(float(data[i]["Выручка"]))
 
         except:
             pass
@@ -169,20 +173,16 @@ def map(request):
     tooltip = "Подробнее..."
 
     # def kachestvo():
-    #     return np.random.choice(['Низкое', 'Среднее', 'Высокое'], 1)[0]
+    #     # return np.random.choice(['Низкое', 'Среднее', 'Высокое'], 1)[0]
+    #     return np.random.choice(range(1000), 1)[0]
+
+
 
     import branca
+    import random
 
     def fancy_html(row):
         i = row
-        # Date = df['Date'].iloc[i]
-
-        # mass_kod[i]
-        # mass_name[i]
-        # mass_address[i]
-        # mass_ruk[i]
-        # mass_region[i]
-        # mass_okved[i]
 
         html = """
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -217,7 +217,7 @@ def map(request):
         </head>
         <body>
             <table>
-                <tr><th colspan="6">Подробнее:</th></tr>
+                <tr><th colspan="7">Подробнее:</th></tr>
                 <tr>
                 <td>Поставщик</td>
                 <td>Наименование</td>
@@ -225,6 +225,7 @@ def map(request):
                 <td>Руководитель</td>
                 <td>Наименование региона</td>
                 <td>Описание ОКВЭД</td>
+                <td>Выручка</td>
                 </tr>
                 <tr>
                 <td>{}</td>""".format(mass_kod[i]) + """
@@ -233,6 +234,7 @@ def map(request):
                 <td>{}</td>""".format(mass_ruk[i]) + """
                 <td>{}</td>""".format(mass_region[i]) + """
                 <td>{}</td>""".format(mass_okved[i]) + """
+                <td>{}</td>""".format(random.randint(10000,20000)) + """
                 </tr>
             </table>
         </body>
@@ -243,7 +245,7 @@ def map(request):
     for i in range(len(mass_name)):
         html = fancy_html(i)
 
-        iframe = branca.element.IFrame(html=html, width=1000, height=250)
+        iframe = branca.element.IFrame(html=html, width=1100, height=250)
         popup = folium.Popup(iframe, parse_html=True)
 
         folium.Marker(location=[mass_x[i], mass_y[i]],
@@ -252,14 +254,16 @@ def map(request):
                       icon=folium.Icon(color="darkred", icon="glyphicon glyphicon-home"),  # color="blue"
                       ).add_to(marker_cluster)
 
+
     html_string = map.get_root().render()
 
     map = map._repr_html_()
 
-    context = {'map': map, 'user': get_user(request)}
+    context = {'map': map, 'user':get_user(request)}
     return render(request, 'map.html', context)
 
 
+#######################################################################################################
 #######################################################################################################
 
 def main(request):
@@ -278,7 +282,7 @@ def start(request):
 
 def lk(request):
     products = Ptoduct.objects.filter(parent=get_user(request))[:3]
-    orders = Order.objects.filter(from_user=get_user(request))[:3]
+    orders = Order.objects.filter(to_user=get_user(request))[:3]
     df = pd.read_excel('Предложение.xlsx')
     df = np.array(df['Объём'])
     arr = df[-10:]
@@ -288,7 +292,7 @@ def lk(request):
     pred = model.predict(arr)[0][4]
     arr = np.append(arr, pred)
     predlozh = enumerate(arr)
-    data = {'user': get_user(request), 'products': products, 'orders': orders, 'predlozh': predlozh}
+    data = {'user': get_user(request), 'products': products, 'orders': orders[:3], 'predlozh': predlozh}
     return render(request, 'lk.html', data)
 
 ####################################
@@ -428,7 +432,7 @@ def create_order(request, pk):
                 status=0,
                 to_user=product.parent,
                 from_user=user,
-                invoiceid=create_invoice(user.externalId, str(form.cleaned_data['price']))
+                invoiceid='0'
             )
             order.save()
             orderlist = get_order_list(request)

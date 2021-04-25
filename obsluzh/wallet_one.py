@@ -1,0 +1,168 @@
+import requests as r
+import datetime
+from collections import defaultdict
+import binascii
+import base64
+from hashlib import sha256
+
+# token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+#
+legent_id = '78f610f1-02a8-455a-81a7-6b1fa6e76518'
+
+
+def get_token():
+    url = 'http://185.209.114.26:9001/auth/realms/plutdev/protocol/openid-connect/token'
+
+    headres = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    data = {
+        'username': 'agent9',
+        'password': 'agent9',
+        'grant_type': 'password',
+        'tocken_type': 'bearer',
+        'client_secret': 'e5d2b5c1-4211-48aa-b272-91d75f4ab0e5',
+        'client_id': 'agentService'
+    }
+
+    page = r.post(url, headers=headres, data=data)
+
+    data = page.json()
+
+    return data['access_token']
+
+
+def register_user(token):
+    # token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+
+    url = f'http://185.209.114.26:8080/subject/person/individual/'
+
+    headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'externalId': '6cE5ru67fD-4569-dEf5-k7h8-5h7k5f3hj885',
+        'nationality': 'RUS',
+        'initials': {
+            'firstName': "Дмитрий",
+            'lastName': "Шалькин",
+            'patronymic': 'Олегович'
+        },
+        'inn': {
+            'inn': '580307598353'
+        },
+        'phone': {
+            'phone': '79046120912'
+        }
+    }
+
+    page = r.post(url, headers=headers, data=data)
+
+    token = page.json()
+    return token['id']
+
+
+def add_card(externalId, number_card, token):
+    # token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+    url = 'http://185.209.114.26:8080/invoicing/paytools/card/'
+
+    headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'externalId': externalId,
+        'number': number_card
+    }
+
+    r.post(url, headers=headers, data=data)
+
+
+def add_samzan(externalID, token):
+    # token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+    url = f'http://185.209.114.26:8080/subject/smz/{externalID}/bind'
+
+    headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'permissions': ["INCOME_REGISTRATION", "PAYMENT_INFORMATION", "INCOME_LIST", "INCOME_SUMMARY", "CANCEL_INCOME"],
+        'externalId': '6cE5ru67fD-4569-dEf5-k7h8-5h7k5f3hj885'
+    }
+
+    page = r.put(url, headers=headers, data=data)
+
+    token = page.json()
+
+    return token['id']
+
+
+def create_invoice(id, price, token):
+    # token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+    legent_id = '78f610f1-02a8-455a-81a7-6b1fa6e76518'
+    url = 'http://185.209.114.26:8080/invoicing/invoice/'
+
+    headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'externalId': '6cE5ru67fD-4569-dEf5-k7h8-5h7k5f3hj885',
+        'fromPerson': {
+            'id': id
+        },
+        'toPerson': {
+            'id': legent_id
+        },
+        'payload': {
+            'transferNote': {
+                'note': 'test'
+            },
+            'finance': {
+                'userAmount': price
+            },
+            'providerIn': 'TESTCARD',
+            'providerOut': 'TESTCARD'
+
+        }
+    }
+
+    page = r.post(url, headers=headers, data=data)
+
+    data = page.json()
+
+    return data['id']
+
+
+def access_invoice(invoiceid, token):
+    # token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+
+    url = f'http://185.209.114.26:8080/invoicing/invoice/{invoiceid}/accept'
+
+    headers = {
+        'Authorization': 'Bearer ' + token,
+    }
+
+    page = r.put(url, headers=headers)
+
+
+def info_invice(invoiceid, token):
+    # token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJma1RiRXhkbUw0Z01ibkxPUWtJQmg0NzA0elA1bWo2TVF2U0V5a3hNb3o0In0.eyJqdGkiOiIyZmZjMDhkMy05YjdkLTQ1YTgtOGIzOS0xMWFlNzFiODIzZDciLCJleHAiOjE2MTkyOTAxMDYsIm5iZiI6MCwiaWF0IjoxNjE5Mjg5ODA2LCJpc3MiOiJodHRwOi8vMTg1LjIwOS4xMTQuMjY6OTAwMS9hdXRoL3JlYWxtcy9wbHV0ZGV2IiwiYXVkIjpbImludm9pY2VTZXJ2aWNlIiwiYWNjb3VudFNlcnZpY2UiLCJwaXBlbGluZVNlcnZpY2UiLCJwZXJzb25TZXJ2aWNlIiwic216U2VydmljZSIsInBheXRvb2xzU2VydmljZSIsImt5Y1NlcnZpY2UiLCJpbnRlcm5hbEFwaVNlcnZpY2UiLCJhY2NvdW50IiwiY29uY2x1c2lvblNlcnZpY2UiXSwic3ViIjoiNjg0ZjE5OTItMTk2ZC00Y2JjLWEwN2EtNmU0YmRmOWY1MTIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWdlbnRTZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiZDdjYmFlOWUtZjI0Ny00MzUwLTlhOTYtODFlMDI5MjRkOTk4IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiaW52b2ljZVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudFNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwicGlwZWxpbmVTZXJ2aWNlIjp7InJvbGVzIjpbIlVTRVIiXX0sInBlcnNvblNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwic216U2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJwYXl0b29sc1NlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwia3ljU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19LCJpbnRlcm5hbEFwaVNlcnZpY2UiOnsicm9sZXMiOlsiVVNFUiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJjb25jbHVzaW9uU2VydmljZSI6eyJyb2xlcyI6WyJVU0VSIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiTGVnYWxFbnRpdHlTZXR0aW5ncyI6eyJpZCI6Ijc4ZjYxMGYxLTAyYTgtNDU1YS04MWE3LTZiMWZhNmU3NjUxOCJ9LCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFnZW50OSJ9.Y_ZPLVxLq_oxd_q85gVmshy3AL-Se7VX5CCxMnoYE0Cyg6mc16V_2quwQKwY1k_8W2Wr-x7KwUopakE8mQSqTGMVPohmX-VzhOr6JvRo09OlcPIEj7yu-hAU12TEqNuhemYsSp3X1yL109elvoK4sxsi6RK-_GRC3oMStwYl78QDiew3OzUyPc-gA8pBeenKiHDyysPH_Rrex3Z8GhiRaOzh8r3vCOc-ylrj8fCge0aiZCytp3P0HB5x6mx0iMxzwRNOnyJVVhoVzAJpEmJYnOvIdIxFS1-mJ_1gGKpJL8-rsMqrJmYy94HdBEv-RIaM_fhSiqdw8TifVhuqFBe4Iw'
+
+    url = f'http://185.209.114.26:8080/invoicing/invoice/{invoiceid}'
+
+    headers = {
+        'Authorization': 'Bearer ' + token
+    }
+
+    page = r.get(url, headers=headers)
+
+    data = page.json()
+
+    return data

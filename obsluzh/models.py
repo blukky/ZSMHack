@@ -17,6 +17,8 @@ class MyUser(models.Model):
     phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="Номер телефона")
     email = models.EmailField(max_length=255, verbose_name="Электронная почта")
     obl = models.CharField(max_length=255, verbose_name='Ваш регион')
+    externalId = models.CharField(max_length=255, blank=True, null=True, verbose_name='Id в wallet one')
+    bind_uuid = models.CharField(max_length=1000, verbose_name='Место в системе')
     who = models.CharField(max_length=255, choices=WHO, default='Поставщик', verbose_name='Статус пользователя')
 
     def __unicode__(self):
@@ -95,6 +97,7 @@ class Order(models.Model):
     status = models.IntegerField(verbose_name='Количество просмотров')
     to_user = models.ForeignKey(MyUser, related_name='to_user', on_delete=models.CASCADE)
     from_user = models.ForeignKey(MyUser, related_name='from_user', on_delete=models.CASCADE)
+    invoiceid = models.CharField(max_length=255, verbose_name='Статус заказа')
 
     class Meta:
         verbose_name = 'Заказ'

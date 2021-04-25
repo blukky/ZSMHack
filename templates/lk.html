@@ -84,60 +84,67 @@
         <div class="container mt-2" align="center">
             <h4 class="" style="padding-top: 2%">{{ user.user.username }}</h4>
 
-            <img src="{{ user.avatar.url }}" style="border-radius: 50%; " width="250px" height="250px">
-            <h4 class="mt-4" style="">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
-            <h4 class="" style="">{{ user.email }}</h4>
-            <h4 class="" style="">{{ user.phone }}</h4>
-        </div>
-    </div>
-    <div>
-        <div class="" id="rectangleuslug" style="margin-left: 5%">
-            <div class="container mt-2" align="">
-                <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="{% url 'price' %}">Мои предложения</a>
-                    <a href="{% url 'add product' %}"><i class="bi bi-plus-circle"></i></a>
-                </h3>
-                {% if not products %}
-                    <h4 align="center" class="mt-5">У вас еще нет услуг!</h4>
-                {% else %}
-                <div class="row">
-                    {% for item in products %}
-                <div id="rectanglezakaz"  align="left">
-                    <a href="{% url 'product_detail' pk=item.pk %}"><img src="{{ item.photo.url }}" alt="" width="240px" height="170px"></a>
-                </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+                <img src="{{ user.avatar.url }}" style="border-radius: 50%; " width="250px" height="250px">
+                <h4 class="mt-4" style="">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+                <h4 class="" style="">{{ user.email }}</h4>
+                <h4 class="" style="">{{ user.phone }}</h4>
             </div>
         </div>
-        <div class="" id="rectangleuslug" style="margin-left: 5%">
-            <div class="container mt-2" align="">
-                <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="#">Мои сделки</a>
-                </h3>
-                {% if not orders %}
-                    <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>
-                {% else %}
-                <div class="row">
-                    {% for item in orders %}
-                <div class="" id="rectanglezakaz" align="left">
-                    <a href="{% url 'info order' pk=item.pk %}"><img src="{{ item.product.photo.url }}" alt="" width="240px" height="170px"></a>
+        <div>
+            <div class="" id="rectangleuslug" style="margin-left: 5%">
+                <div class="container mt-2" align="">
+                    <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="{% url 'price' %}">Мои
+                        предложения</a>
+                        <a href="{% url 'add product' %}"><i class="bi bi-plus-circle"></i></a>
+                    </h3>
+                    {% if not products %}
+                        <h4 align="center" class="mt-5">У вас еще нет услуг!</h4>
+                    {% else %}
+                        <div class="row">
+                            {% for item in products %}
+                                <div id="rectanglezakaz" align="left">
+                                    <a href="{% url 'product_detail' pk=item.pk %}"><img src="{{ item.photo.url }}"
+                                                                                         alt="" width="240px"
+                                                                                         height="170px"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
-                    {% endfor %}
-                    </div>
-                {% endif %}
             </div>
-        </div>
+            <div class="" id="rectangleuslug" style="margin-left: 5%">
+                <div class="container mt-2" align="">
+                    <h3 class="" align="left" style="padding-left: 3%; padding-top: 2%"><a href="#">Мои заказы</a>
+                    </h3>
+                    {% if not orders %}
+                        <h4 align="center" class="mt-5">У вас еще нет заказов!</h4>
+                    {% else %}
+                        <div class="row">
+                            {% for item in orders %}
+                                <div class="" id="rectanglezakaz" align="left">
+                                    <a href="{% url 'info order' pk=item.pk %}"><img src="{{ item.product.photo.url }}"
+                                                                                     alt="" width="240px"
+                                                                                     height="170px"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
 
     </div>
 
-</div>
-<div class="" id="rectanglegraph" style="margin-left: 5%; margin-bottom: 5%">
-    <div class="container mt-2" align="center">
-        <div class="chart-container" style="position: relative; height:300px; width:600px">
-            <canvas id="myChart"></canvas>
-        </div>
-
     </div>
-</div>
+    <div class="" id="rectanglegraph" style="margin-left: 5%; margin-bottom: 5%">
+        <div class="container mt-2" align="center">
+            <div class="chart-container" style="position: relative; height:300px; width:600px">
+                <canvas id="myChart"></canvas>
+            </div>
+            {% for item in predlozh %}
+                <div style="display: none" id="{{ item.0 }}" class="cart">{{ item.1 }}</div>
+            {% endfor %}
+        </div>
+    </div>
 
 
 {% endblock %}

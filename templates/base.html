@@ -131,9 +131,11 @@
             <div class="chart-container" style="position: relative; height:300px; width:600px">
                 <canvas id="myChart"></canvas>
             </div>
-
         </div>
     </div>
+    {% for item in spros %}
+        <div style="display: none" id="{{ item.0 }}" class="cart">{{ item.1 }}</div>
+    {% endfor %}
 {% endblock %}
 
 <div class="d-flex" style="background: #303030">

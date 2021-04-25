@@ -6,7 +6,7 @@
     </a>
     <a class="" href="{% url 'main' %}" style="margin-right: 2%; margin-left: 4%"><h5>Главная</h5></a>
     <a class="" href="{% url 'map' %}" style="margin-right: 2%"><h5>Карта</h5></a>
-    <a class="" href="#" style="margin-right: 2%"><h5>Помощь</h5></a>
+    <a class="" href="{% url 'support' %}" style="margin-right: 2%"><h5>Помощь</h5></a>
 
     {% if request.user.is_authenticated %}
             <div class="d-flex" style="margin-left: 40%">

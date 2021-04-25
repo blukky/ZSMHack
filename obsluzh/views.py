@@ -408,6 +408,9 @@ def info_product(request, pk):
     data = {'user': get_user(request), 'product': product}
     return render(request, 'info_product.html', data)
 
+def support(request):
+    return render(request, 'support.html')
+
 
 def create_order(request, pk):
     if request.method == 'POST':

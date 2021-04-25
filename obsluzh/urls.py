@@ -14,6 +14,7 @@ urlpatterns = [
     path('main', main, name='main'),
     path('map', map, name='map'),
     path('lk', lk, name='lk'),
+    path('support', support, name='support'),
 
     # path('region', select_region, name='region'),
     path('region/', select_region, name='region'),
